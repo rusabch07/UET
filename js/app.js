@@ -15,8 +15,7 @@ let appState = {
   routeListScrollY: 0,
   homeStatsAnimated: false,
   routeListState: null, // campus, query and scroll position before opening details
-  map: null,
-  markers: []
+  map: null
 };
 
 // Centralized schedule version & data freshness metadata.
@@ -92,7 +91,6 @@ const SearchLoader = (() => {
   let _msgTimer = null;
   let _msgIndex = 0;
   let _startTime = 0;
-  let _resolveMinTimer = null;
   let _pendingHide = false;
 
   function _getEl() { return document.getElementById('search-loading-overlay'); }
@@ -191,7 +189,7 @@ const SearchLoader = (() => {
 })();
 
 
-// Force refresh Lucide SVG icons in dynamic containers
+// Shared icon initialization for initial markup and dynamically rendered views.
 function refreshLucideIcons() {
   if (window.lucide && typeof window.lucide.createIcons === 'function') {
     const iconEls = document.querySelectorAll('i[class*="lucide-"]');
@@ -303,15 +301,6 @@ function findNearbyRoutes(userLat, userLng, campusFilter, config = NEARBY_ROUTE_
 
   // Sort individual pickup stops by distance, not routes.
   stopCandidates.sort((a, b) => a.distanceKm - b.distanceKm);
-
-  // Opt-in developer diagnostics; no logging during normal browsing.
-  if (window.UET_DEBUG_NEARBY_ROUTES === true) {
-    stopCandidates.forEach(candidate => console.debug(
-      candidate.stop.name + ': ' + candidate.distanceKm.toFixed(3) + ' km',
-      { routeId: candidate.route.id, stopIndex: candidate.stopIndex,
-        withinNearbyRadius: candidate.distanceKm <= nearbyRadiusKm }
-    ));
-  }
 
   const nearestStop = stopCandidates[0] || null;
   if (!nearestStop || nearestStop.distanceKm > maxPickupDistanceKm) {
@@ -906,6 +895,13 @@ function initUIEvents() {
     });
   }
 
+  // Delegation also handles Directions buttons rendered after search/selection.
+  document.addEventListener('click', (event) => {
+    const trigger = event.target.closest('[data-directions-route]');
+    if (!trigger) return;
+    openStopDirections(decodeURIComponent(trigger.dataset.directionsRoute), Number(trigger.dataset.directionsStop), trigger);
+  });
+
   // Modal Close buttons
   document.querySelectorAll('.modal-close, .modal-overlay').forEach(el => {
     el.addEventListener('click', (e) => {
@@ -1476,7 +1472,9 @@ function renderResultPage() {
 
   // Map markers for Leaflet
   const mapPoints = [
-    { lat: userLat, lng: userLng, title: 'Your GPS Location', popup: `<b>Your GPS Location</b><br>${userLocationLabel}` },
+    ...(Number.isFinite(userLat) && Number.isFinite(userLng)
+      ? [{ lat: userLat, lng: userLng, title: 'Your GPS Location', popup: `<b>Your GPS Location</b><br>${userLocationLabel}` }]
+      : []),
     { lat: stop.lat, lng: stop.lng, title: `Pickup: ${stop.name}`, popup: `<b>${formatRouteLabel(route.routeNo)} - ${stop.name}</b><br>Pickup Time: ${stop.time}<br>Approx. distance: ${formattedDist}` },
     { lat: route.stops[route.stops.length - 1].lat, lng: route.stops[route.stops.length - 1].lng, title: 'Campus Destination', popup: `<b>${route.stops[route.stops.length - 1].name}</b>` }
   ];
@@ -1503,7 +1501,7 @@ function renderResultPage() {
           </div>
         </div>
         <div>
-          ${renderStopNavigation(stop)}
+          ${renderStopNavigation(stop, route, stopIndex)}
         </div>
       </div>
     </div>
@@ -1956,27 +1954,58 @@ function toggleFaq(index) {
   }
 }
 
-// Google Maps URLs work in desktop browsers and the mobile Maps app.
-// Never use a stop name as a Place ID. coordinateStatus is informational only.
-function getStopNavigationUrl(stop) {
+// Directions chooser: destination-only HTTPS links open from native anchor taps.
+function getStopDirectionsLinks(stop) {
   if (!stop || !Number.isFinite(stop.lat) || stop.lat < -90 || stop.lat > 90 ||
       !Number.isFinite(stop.lng) || stop.lng < -180 || stop.lng > 180) return null;
-
-  let url = `https://www.google.com/maps/dir/?api=1&destination=${stop.lat},${stop.lng}`;
-  // Future explicit opt-in after the Google Place ID itself is verified.
-  // A verified coordinateStatus alone does not verify an associated Place ID.
-  if (stop.placeIdVerified === true && typeof stop.placeId === 'string' && stop.placeId.trim()) {
-    url += `&destination_place_id=${encodeURIComponent(stop.placeId.trim())}`;
-  }
-  return url;
+  // Encode only validated destination coordinates; no website GPS or Place ID needed.
+  const coordinates = encodeURIComponent(stop.lat + ',' + stop.lng);
+  return {
+    google: 'https://www.google.com/maps/dir/?api=1&destination=' + coordinates + '&travelmode=walking',
+    apple: 'https://maps.apple.com/?daddr=' + coordinates + '&dirflg=w',
+    location: 'https://www.google.com/maps/search/?api=1&query=' + coordinates
+  };
 }
 
-function renderStopNavigation(stop) {
-  const url = getStopNavigationUrl(stop);
-  if (!url) return '<span class="navigation-unavailable" role="status">Navigation location not available</span>';
-  return `<a class="btn-accent" href="${url.replace(/&/g, '&amp;')}" target="_blank" rel="noopener noreferrer">
+function getStopNavigationUrl(stop) {
+  const links = getStopDirectionsLinks(stop);
+  return links ? links.google : null;
+}
+
+function renderStopNavigation(stop, route, stopIndex) {
+  if (!getStopDirectionsLinks(stop) || !route || !Number.isInteger(stopIndex)) {
+    return '<span class="navigation-unavailable" role="status">Directions are currently unavailable for this stop.</span>';
+  }
+  // Keep the exact route/stop identity on each trigger, independent of active results.
+  return `<button type="button" class="btn-accent" data-directions-route="${encodeURIComponent(route.id)}" data-directions-stop="${stopIndex}" aria-haspopup="dialog" aria-controls="directions-modal">
     <i class="lucide-navigation"></i> Directions to Stop
-  </a>`;
+  </button>`;
+}
+
+function openStopDirections(routeId, stopIndex, trigger) {
+  const route = UET_DATA.routes.find(item => item.id === routeId);
+  const stop = route && Number.isInteger(stopIndex) ? route.stops[stopIndex] : null;
+  const links = getStopDirectionsLinks(stop);
+  const modal = document.getElementById('directions-modal');
+  if (!modal) return;
+  document.getElementById('directions-dialog-title').textContent = stop ? 'Directions to ' + stop.name : 'Directions to Stop';
+  document.getElementById('directions-stop-context').textContent = route && stop
+    ? formatRouteLabel(route.routeNo) + ' · ' + getCampusShortName(route.campusId) : '';
+  document.getElementById('directions-error').hidden = Boolean(links);
+  document.getElementById('directions-options').hidden = !links;
+  const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent || '') ||
+    (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+  for (const option of ['google', 'apple', 'location']) {
+    const anchor = document.getElementById('directions-' + option);
+    // Clear old destinations even when a later stop has invalid coordinates.
+    anchor.removeAttribute('href');
+    anchor.hidden = !links || (option === 'apple' && !isIOS);
+    if (!anchor.hidden) anchor.setAttribute('href', links[option]);
+  }
+  modal.classList.add('active');
+  // Safari does not always focus tapped buttons; retain the actual trigger for closing.
+  if (trigger) trigger.focus({ preventScroll: true });
+  openAccessibleLayer(modal, document.getElementById(links ? 'directions-google' : 'directions-cancel'));
 }
 // Route Print / PDF Trigger
 function printRouteSchedule(routeId) {

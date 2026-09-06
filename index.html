@@ -4,6 +4,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>UET Bus Route Info - Find Your Campus Bus</title>
+  <link rel="icon" type="image/png" href="assets/uet-logo.png">
   <meta name="description" content="UET Bus Route Info for the UET community, based on official transport schedule data for Main Campus and KSK. Find stops, route timings, and transport contact details.">
 
   <!-- Google Fonts: Inter & Outfit -->
@@ -334,6 +335,21 @@
 
   </main>
 
+  <!-- Destination-only map options; each anchor opens directly from its own tap. -->
+  <div id="directions-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="directions-dialog-title" aria-describedby="directions-stop-context" aria-hidden="true" tabindex="-1" inert>
+    <div class="modal-content directions-sheet">
+      <h2 id="directions-dialog-title">Directions to Stop</h2>
+      <p id="directions-stop-context"></p>
+      <p id="directions-error" role="status" hidden>Directions are currently unavailable for this stop.</p>
+      <div id="directions-options" hidden>
+        <a id="directions-google" class="btn-accent" target="_blank" rel="noopener noreferrer">Google Maps</a>
+        <a id="directions-apple" class="btn-secondary" target="_blank" rel="noopener noreferrer" hidden>Apple Maps</a>
+        <a id="directions-location" class="btn-secondary" target="_blank" rel="noopener noreferrer">Open Stop Location</a>
+      </div>
+      <button id="directions-cancel" type="button" class="btn-secondary" onclick="closeModal()">Cancel</button>
+    </div>
+  </div>
+
   <!-- Universal Print / Download Modal -->
   <div id="print-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="print-dialog-title" aria-hidden="true" tabindex="-1">
     <div class="modal-content">
@@ -419,28 +435,5 @@
   <script src="js/data.js"></script>
   <script src="js/app.js"></script>
 
-  <script>
-    // Force the Lucide CDN script to render icons from the existing class naming
-    document.addEventListener('DOMContentLoaded', function(){
-      var iconEls = document.querySelectorAll('i[class*="lucide-"]');
-      iconEls.forEach(function(icon){
-        var name = Array.from(icon.classList).find(function(cls){
-          return cls.indexOf('lucide-') === 0;
-        });
-        if (name && !icon.hasAttribute('data-lucide')) {
-          icon.setAttribute('data-lucide', name.replace(/^lucide-/, ''));
-        }
-        if (!icon.classList.contains('lucide')) {
-          icon.classList.add('lucide');
-        }
-      });
-      if (window.lucide && typeof window.lucide.createIcons === 'function') {
-        window.lucide.createIcons({
-          root: document,
-          nameAttr: 'data-lucide'
-        });
-      }
-    });
-  </script>
 </body>
 </html>

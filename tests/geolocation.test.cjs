@@ -28,7 +28,7 @@ function setup(userAgent = 'iPhone Safari') {
     showLocationSearchError: message => errors.push(message),
     runNearbyRouteSearch: (...args) => { results.push(args); vm.runInContext('SearchLoader.hide()', context); }
   });
-  vm.runInContext(source.slice(source.indexOf('const SearchLoader ='), source.indexOf('// Force refresh Lucide')), context);
+  vm.runInContext(source.slice(source.indexOf('const SearchLoader ='), source.indexOf('function refreshLucideIcons()')), context);
   vm.runInContext(source.slice(source.indexOf('// Geolocation starts'), source.indexOf('function normalizeStopSearchText')), context);
   const click = () => vm.runInContext('detectUserGeolocation()', context);
   const flush = () => { while (timers.length) timers.shift()(); };

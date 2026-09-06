@@ -189,7 +189,7 @@ test('metadata cannot change campus filtering, exact/partial search, cards, resu
     assert.equal(snapshot(), baseline, variant);
   }
 });
-test('navigation uses coordinates and only explicitly verified Place IDs', () => {
+test('directions always use validated coordinates and walking mode without Place IDs', () => {
   const h = app();
   const stop = {lat:31.5,lng:74.3,name:'A stop name',coordinateStatus:'verified',placeId:'Unverified ID'};
   const urlFor = value => h.run(`getStopNavigationUrl(${JSON.stringify(value)})`);
@@ -198,14 +198,20 @@ test('navigation uses coordinates and only explicitly verified Place IDs', () =>
   assert.equal(url.searchParams.get('destination'), '31.5,74.3');
   assert.equal(url.searchParams.has('destination_place_id'), false);
   const verified = new URL(urlFor({...stop,placeId:'ChIJ-test-id',placeIdVerified:true}));
-  assert.equal(verified.searchParams.get('destination_place_id'), 'ChIJ-test-id');
+  assert.equal(verified.searchParams.has('destination_place_id'), false);
+  assert.equal(verified.searchParams.get('travelmode'), 'walking');
+  const links = h.run('getStopDirectionsLinks(' + JSON.stringify(stop) + ')');
+  assert.equal(new URL(links.apple).searchParams.get('daddr'), '31.5,74.3');
+  assert.equal(new URL(links.apple).searchParams.get('dirflg'), 'w');
+  assert.equal(new URL(links.location).searchParams.get('query'), '31.5,74.3');
+  assert.equal(new URL(links.location).pathname, '/maps/search/');
   assert.equal(verified.searchParams.get('destination'), '31.5,74.3');
   for (const coords of ['null', '{}', '{lat:null,lng:74}', '{lat:31,lng:undefined}',
     '{lat:NaN,lng:74}', '{lat:31,lng:Infinity}', '{lat:91,lng:74}', '{lat:31,lng:-181}',
     '{lat:"31",lng:74}', '{lat:"",lng:74}']) {
     assert.equal(h.run(`getStopNavigationUrl(${coords})`), null);
     const html = h.run(`renderStopNavigation(${coords})`);
-    assert.match(html, /Navigation location not available/);
+    assert.match(html, /Directions are currently unavailable for this stop/);
     assert.doesNotMatch(html, /href=|onclick=|<button/);
   }
   assert.ok(urlFor({lat:0,lng:0}));
@@ -213,6 +219,7 @@ test('navigation uses coordinates and only explicitly verified Place IDs', () =>
     const actual = new URL(urlFor(stop));
     assert.equal(actual.searchParams.get('destination'), `${stop.lat},${stop.lng}`);
     assert.equal(actual.searchParams.has('destination_place_id'), false);
+    assert.equal(actual.searchParams.get('travelmode'), 'walking');
   }
 });
 test('distance formatting uses meters below 1 km and kilometers at or above 1 km', () => {
@@ -364,9 +371,6 @@ test('three same-route stops inside 1.5 km survive and sort by geographic distan
  assert.equal(h.run('JSON.stringify(result.matchingRoutes.map(i=>i.stop.name))'),JSON.stringify(['Flat Stop','Scheme Mor','Yateem Khana']));
  assert.equal(h.run('result.nearestStop.stop.name'),'Flat Stop');
  assert.equal(h.run('debugLogs.length'),0);
- h.run('window.UET_DEBUG_NEARBY_ROUTES=true;findNearbyRoutes(0,0,"main")');
- assert.equal(h.run('debugLogs.length'),3);
- assert.equal(h.run('debugLogs[0][0]'),'Flat Stop: 0.350 km');
  h.run('syntheticRoute.stops.push({name:"Invalid",lat:null,lng:0},{name:"Outside",lat:91,lng:0});var validated=findNearbyRoutes(0,0,"main")');
  assert.equal(h.run('validated.matchingRoutes.length'),3);
 });

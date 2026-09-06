@@ -1,65 +1,173 @@
 # UET Bus Route Info
 
-## Search and deployment
+**Phase 1 / v1.0 — Route Information Platform**
 
-Homepage autocomplete uses the local UET stop dataset. GPS uses browser geolocation; Google Maps directions remain ordinary coordinate-based links. No Google API key or loader is needed. Route Schedules searches numbers, labels, names, start areas, campuses, stops, and aliases through one normalization helper, including Govt./Government spelling equivalence. Official display names are unchanged.
+**Status: Completed / Production Ready**
 
-Select GitHub Actions in Settings → Pages and run the Deploy GitHub Pages workflow. For local builds, run `node scripts/build-pages.cjs` and serve `_site` over HTTP. The build preserves an existing CNAME.
+A community-focused route information platform for UET Lahore students, covering KSK / New Campus and Main Campus transport routes.
 
-Run `node --test tests/*.test.cjs`, `node tests/places-browser.cjs` (current local-search/GPS browser regression), and `node tests/responsive-accessibility.cjs` with Playwright available. Set CHROMIUM_PATH if needed.
+**Route information is based on official UET transport schedules.** This independently developed website is a community project; it is not presented as an officially authorized UET application.
 
-## Stop coordinate metadata and audit
+[Visit the website](https://rusabch07.github.io/UET/)
 
-Every route stop now explicitly includes `coordinateStatus`, `placeId`, `source`, and `aliases`. Existing coordinates have not been independently verified, so all are marked `unverified`; `placeId` and `source` are `null`, and `aliases` contain curated spelling variants where available. No coordinates, route IDs/names, timings, or campus assignments were changed.
+## Phase 1 features
 
-- `unverified`: no exact coordinate verification is recorded.
-- `approximate`: evidence establishes only an approximate position.
-- `verified`: an exact pickup location has been checked; supply a nonempty `source` citation (URL or verification notes, preferably including date).
-- `placeId`: a Google Place ID string when confirmed, otherwise `null`. A Place ID alone does not establish that a general place entrance is the exact bus pickup location.
-- `source`: a citation string or `null`.
-- `aliases`: additional known stop-name strings used by schedule/header search; they never affect coordinate-based recommendations.
+- KSK / New Campus and Main Campus route information and campus selection.
+- Local UET stop autocomplete with route-specific suggestions, including stops appearing on multiple routes.
+- Device-location detection and a **1.5 km nearby-stop search** with multiple pickup options from the same or different routes.
+- Route Schedules search and a dedicated **Full Route** view with return navigation.
+- Stop timings and driver, contact, and bus information where available; unavailable details display as N/A.
+- **Directions to Stop** chooser with Google Maps walking directions, Apple Maps on iPhone/iPad, and an Open Stop Location fallback.
+- **Saved Routes**, stored on the current browser/device.
+- Responsive mobile, tablet, and desktop layouts, a mobile drawer, and dark/light themes.
+- iPhone and Android geolocation handling, distinct failure messages, and manual stop search as a fallback.
+- Interactive pickup maps, notices, FAQs, and printable route schedules.
 
-Run `node scripts/audit-stop-coordinates.cjs` to validate numeric lat/lng ranges and metadata without modifying data. Invalid records fail the audit/CI. Duplicate coordinates are reported for manual review, not rejected or merged. Run with `--write` to regenerate [the full review report](docs/stop-coordinate-audit.md). Do not resolve a warning by guessing coordinates.
+### How nearby search works
 
-Run `node --test tests/*.test.cjs` for all regression tests, including rendered route labels and dataset preservation. The dataset baseline hash intentionally guards existing values; update it only after an explicitly authorized dataset revision. Coordinate status currently does not filter, rank, or otherwise affect pickup recommendations.
-## Stop navigation
+Press **Detect My Area** to request location. The selected campus's valid stops are checked using straight-line distance. Every stop within **1.5 km**, including the boundary, is retained and sorted nearest first. Multiple stops on one route remain separate options. If none qualify, the page shows that no nearby UET bus stop was found within 1.5 km.
 
-`getStopNavigationUrl(stop)` validates finite numeric lat/lng ranges and uses `destination=LATITUDE,LONGITUDE`. Invalid or missing coordinates produce no link and show `Navigation location not available`. Stop names never populate `destination_place_id`.
+Distances are estimates, not walking distances or live bus positions. Manual autocomplete selects the chosen stop and route directly; it does not require GPS.
 
-All current stops use coordinates. Future verified Google Place IDs may be used only by explicitly setting `placeIdVerified: true` alongside a nonempty `placeId`; coordinate verification status alone is not sufficient. Coordinates are still required as the destination/fallback. This optional flag affects only navigation, never route recommendations. See [Google Maps URL directions documentation](https://developers.google.com/maps/documentation/urls/get-started#directions-action).
-## Nearby pickup selection policy
+## Technology
 
-`NEARBY_ROUTE_CONFIG` in `js/app.js` controls the nearby search radius (1.5 km). Distances are straight-line estimates, not walking routes.
+| Area | Technologies used |
+| --- | --- |
+| Website | HTML, CSS, vanilla JavaScript |
+| Location | Standard browser `navigator.geolocation.getCurrentPosition()` |
+| Maps | Leaflet with OpenStreetMap tiles; Google Maps directions links |
+| Presentation | Lucide icons; Inter and Outfit through Google Fonts |
+| Local preferences | Browser `localStorage` for Saved Routes and theme |
+| Hosting | GitHub Pages and GitHub Actions |
+| Build and checks | Node.js built-in modules/test runner; Playwright browser tests |
 
-The finder sorts all individual pickup stops for the selected campus and calculates straight-line distance to every valid pickup stop. It returns every valid stop that is within 1.5 km of the user's location, sorted from nearest to farthest. Multiple nearby stops on the same route and across different routes within 1.5 km are preserved. If no stop is found within 1.5 km, the interface indicates that no nearby UET bus stop was found within 1.5 km.
+The deployed website is static. It requires no application server, database, Google Places loader, or API key. Third-party fonts, icons, map scripts, and tiles require network access.
 
-For example, 550 m and 610 m are offered together; 1.8 km is excluded. The optional fourth finder argument accepts a complete configuration object for tests or other callers; the UI uses the shared defaults.
-## Homepage statistics
+## Data source and integrity
 
-`calculateRouteStats`, `calculateCampusStats`, and `countUniqueStops` derive homepage statistics from the current database whenever Home renders. Total routes count route records (including separately listed variants and grouped shuttle entries), not individual buses. Unique stop names are deduplicated across all routes using lowercase names with trimmed/collapsed whitespace; campus terminals are included. Differently named stops are not merged based on unverified coordinates, Place IDs, or aliases. Campus counts may overlap in their stop-name totals.
+Route and schedule information is derived from official UET transport route information. The release contains **35 route records and 365 stop records**. These are dataset records, not counts of individual buses or unique physical stops; route variants and shared stops can appear separately.
 
-Scheduled arrivals are the distinct `arrivalTime` values recorded for each campus, not an on-time performance claim or a universal start time. Missing times are omitted. No daily commuter statistic is displayed because the repository provides no verified source for it.
-## Stop search aliases
+The dataset lives in [`js/data.js`](js/data.js). Stop names, timings, driver/contact/bus details, and coordinates must not be changed as part of layout or code cleanup.
 
-`normalizeStopSearchText` lowercases text, trims/collapses whitespace, and converts punctuation to word separators while preserving Unicode letters and numbers. `stopMatchesSearch` checks the official name and aliases, with a compact spacing-insensitive comparison to preserve existing searches such as Mughalpura/Mughal Pura. No fuzzy geocoding or raw-text location resolution is involved.
+GPS stop coordinates support maps, directions, and nearby searches and may be maintained and verified separately from the schedules. Current stop coordinates are marked `unverified`; numeric validation does not establish physical accuracy. Shared coordinates can be legitimate and must not be automatically merged or corrected.
 
-Header exact lookup still prefers matches in the selected campus, falling back to another campus only when no exact match exists there. Route Schedules partial search stays within the selected campus. Official names are displayed unchanged. See [spelling review candidates and added aliases](docs/stop-spelling-review.md).
+- [Coordinate audit](docs/stop-coordinate-audit.md)
+- [Stop spelling and search-alias notes](docs/stop-spelling-review.md)
+- [Maintainer notes](docs/maintenance.md)
 
-Aliases are now intentionally functional for text search. Verification status, Place ID, and coordinate-source metadata remain informational for search; recommendation-invariance tests still vary all of these fields, including aliases, to guard coordinate-based pickup ranking.
-## Client-side navigation
+## Privacy and location permissions
 
-Route lists use `#routes`; individual routes use `#routes/<route-id>` (for example `#routes/main-19`). Internal navigation uses browser history without reloading the document. Browser Back/Forward restores each entry's campus, search query, and saved list scroll position. Opening details from a card creates a route-list entry first when needed; the on-page Back button uses that entry. Direct detail URLs restore the route's own campus on load/refresh, and unknown or malformed route IDs are replaced with `#routes`. No GitHub Pages server rewrite is required.
-## Responsive layout and keyboard checks
+Phase 1 **does not continuously track students or buses**. Device location is requested only when a user activates location-based functionality, such as Detect My Area or an explicit GPS retry button. There is no background location watcher, account system, or application backend collecting location history.
 
-Targeted rules in `css/styles.css` align `.search-input-group` controls at 1024 px and below, stabilize `.header-container` / `.header-actions`, stack `.campus-toggle-wrapper` on phones, and keep `.stats-grid` in two columns on normal phone widths. `.search-field-wrapper` positions both original icon elements and Lucide-generated SVGs so icons cannot shrink the input. Both search-result and full-route `.stops-timeline` views use a dedicated marker column with connected half-lines that stop at the first and last marker centers. Existing theme color variables and route data are unchanged.
+The initial request allows a recent cached position, uses a 12-second timeout, and does not require high accuracy. One automatic retry is allowed for location-unavailable or timeout errors; permission denial is not automatically retried. The button and loading state recover after failure, and manual stop search remains available.
 
-`index.html` groups the theme and menu buttons and provides dialog semantics. `js/app.js` adds keyboard-operable FAQ/pickup buttons, selected-state attributes, modal/drawer focus containment, Escape dismissal, and focus restoration. Full-route focus moves to its Back button after the section becomes visible.
+On iPhone, denied permission may require enabling Safari location access and **Settings → Privacy & Security → Location Services**, then reloading the page. Production geolocation requires HTTPS; use localhost for local development.
 
-Run `node tests/responsive-accessibility.cjs` with Playwright available and `CHROMIUM_PATH` pointing to Chrome if needed. Set `TEST_EXTERNAL_ASSETS=1` to include the deployed fonts and icons. The script checks 360x800, 390x844, 412x915, 768x1024, 820x1180, 1024x768, and 1366x768 in both themes, and saves screenshots under ignored `test-results/`. Checks include actual input/button geometry, campus dimensions, stats rows, timeline axes, full-route isolation, FAQ keyboard activation, print-dialog focus trapping/restoration, drawer dismissal, and document overflow.
+Saved Routes and theme preferences remain in the browser's local storage and do not sync between devices. Map and CDN providers receive normal network requests. Choosing a map option sends the stop destination coordinates to Google Maps or Apple Maps; website location permission is not required.
 
+## Project structure
 
-Timeline regression coverage also renders the Flat Stop search result, including origin, nearest-pickup, intermediate and destination markers. Each dot is checked against the line center at every target size/theme, including hover; marker diameter, continuous row connections and first/last line endpoints are checked. The centered CSS is shared by both timeline views.
+```text
+UET/
+├── index.html                  # Page structure and initial theme setup
+├── css/
+│   └── styles.css              # Shared styles and responsive rules
+├── js/
+│   ├── data.js                 # Route, stop, campus, and transport data
+│   └── app.js                  # Search, location, rendering, and navigation
+├── assets/
+│   └── uet-logo.png
+├── docs/
+│   ├── maintenance.md
+│   ├── stop-coordinate-audit.md
+│   └── stop-spelling-review.md
+├── scripts/
+│   ├── build-pages.cjs         # Static build and asset versioning
+│   └── audit-stop-coordinates.cjs
+├── tests/                     # Automated tests and browser diagnostics
+├── .github/workflows/         # GitHub Pages deployment workflow
+└── _site/                     # Generated Pages artifact; ignored by Git
+```
 
-## Nearby distance diagnostics
+`test-results/` contains generated screenshots and is also ignored. Documentation, tests, and Node.js tooling are not required by the deployed page.
 
-Set `window.UET_DEBUG_NEARBY_ROUTES = true` in the browser developer console, then retry GPS. The shared finder logs each valid selected-campus stop in distance order, its route/index and whether it is inside 1.5 km. Set the flag to false to stop logging. Every valid stop is evaluated, including the final stop; route sequence never excludes or prioritizes a candidate. Stored coordinates remain unchanged and unverified.
+## Run locally
+
+Use Node.js 24, matching the deployment workflow:
+
+```sh
+node scripts/build-pages.cjs
+```
+
+Serve `_site` with a static HTTP server and open its localhost URL. For example, if Python is installed:
+
+```sh
+python -m http.server 8080 --directory _site
+```
+
+Open `http://localhost:8080/`. Avoid `file://` when checking browser permissions, asset requests, and navigation. Rebuild after changing source files.
+
+## Deploy to GitHub Pages
+
+1. In the repository's **Settings → Pages**, select **GitHub Actions** as the source.
+2. Push the release changes to `main`, or run the **Deploy GitHub Pages** workflow manually for `main`.
+3. The workflow runs automated tests and the coordinate audit, builds `_site`, and uploads that freshly generated artifact.
+4. Check the completed deployment and reload the published site.
+
+The build copies current source assets and adds a SHA-256 content version to each local CSS/JS reference in generated HTML, such as `js/app.js?v=<content-hash>`. Versions change automatically when asset bytes change. Source HTML keeps plain relative paths; generated URLs remain compatible with `/UET/` project hosting. An existing root `CNAME` is preserved.
+
+Do not upload an older `_site` copy or manually edit generated assets. A previously cached HTML document can still reference an earlier version until it is refreshed; content versioning ensures newly loaded release HTML requests the corresponding CSS/JS.
+
+## Validation
+
+Run the automated suite and the read-only coordinate audit:
+
+```sh
+node --test tests/*.test.cjs
+node scripts/audit-stop-coordinates.cjs
+```
+
+Browser checks require Playwright and Chrome. For a local development install:
+
+```sh
+npm install --no-save --package-lock=false playwright
+node scripts/build-pages.cjs
+node tests/phase1-browser.cjs
+node tests/places-browser.cjs
+node tests/responsive-accessibility.cjs
+node tests/header-browser.cjs
+```
+
+Set `CHROMIUM_PATH` to your Chrome executable if the default Windows location does not apply. Set `TEST_EXTERNAL_ASSETS=1` for responsive tests with real fonts and icons. The release smoke test serves the built artifact under `/UET/` and checks versioned asset loading, manual search after denied GPS, campuses, duplicate stops, directions, Saved Routes, GPS, and console/network failures.
+
+Responsive checks cover 360×800, 390×844, 412×915, 768×1024, 820×1180, 1024×768, and 1366×768 in both themes. iPhone flows are simulated in Chromium, and Android uses Chrome emulation; these checks do not replace physical-device Safari/Android testing.
+
+To refresh only the coordinate report after an authorized data update:
+
+```sh
+node scripts/audit-stop-coordinates.cjs --write
+```
+
+Do not update dataset regression baselines merely to make a failing test pass.
+
+## v1.0 release notes
+
+- Local UET stop search and route-specific autocomplete selection.
+- GPS nearby-stop detection within 1.5 km, preserving multiple pickup options.
+- Route Schedules, Full Route views, and return navigation.
+- Saved Routes, coordinate-based directions, and available transport details.
+- Mobile/tablet/desktop responsiveness and dark/light themes.
+- iOS/Android geolocation compatibility improvements and manual fallback.
+- Content-versioned production assets and release regression coverage.
+
+## Future roadmap — planned 2027 work
+
+The following are future plans, **not current Phase 1 functionality**:
+
+- Secure UET student accounts.
+- Route senior and driver accounts.
+- Live bus tracking and real-time ETA.
+- Notifications.
+- Transport administration tools.
+
+No authentication, OTP, Firebase, Supabase, live tracking backend, or admin panel is included in this release.

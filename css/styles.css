@@ -2010,10 +2010,6 @@ body.menu-open {
     z-index: 110;
   }
 
-  .nav-links.open {
-    display: flex;
-  }
-
   .nav-links li {
     width: 100%;
   }
@@ -2885,4 +2881,18 @@ button.pickup-option > span span { display: block; }
   .app-header .brand-logo { font-size: .7rem; }
   .app-header .brand-logo-image { width: 34px; }
   .app-header .brand-logo > div > span:first-child { white-space: normal; }
+}
+
+/* Compact Directions chooser; scoped to avoid changing existing dialogs. */
+#directions-modal .directions-sheet { max-width: 400px; padding: 1.25rem; }
+#directions-dialog-title { margin: 0 0 .4rem; font-size: 1.2rem; color: var(--heading-color); overflow-wrap: anywhere; }
+#directions-stop-context { margin: 0 0 1rem; color: var(--text-muted); font-size: .9rem; overflow-wrap: anywhere; }
+#directions-options { display: grid; gap: .65rem; }
+#directions-modal [hidden] { display: none; }
+#directions-modal a, #directions-cancel { display: flex; width: 100%; min-height: 48px; align-items: center; justify-content: center; white-space: normal; text-align: center; }
+#directions-cancel { margin-top: .85rem; }
+#directions-error { margin: 0 0 1rem; }
+@media (max-width: 600px) {
+  #directions-modal { align-items: flex-end; padding: .75rem; padding-bottom: max(.75rem, env(safe-area-inset-bottom)); }
+  #directions-modal .directions-sheet { max-height: 85vh; }
 }
