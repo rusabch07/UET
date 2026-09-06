@@ -698,10 +698,9 @@ const UET_DATA = {
         { name: "Taj Bagh", time: "7:05 AM", lat: 31.5695, lng: 74.4050, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Fateh Garh", time: "7:08 AM", lat: 31.5710, lng: 74.3980, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "New Pull", time: "7:09 AM", lat: 31.5700, lng: 74.3890, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Lal Pul", time: "7:10 AM", lat: 31.5685, lng: 74.3820, coordinateStatus: "unverified", placeId: null, source: null, aliases: ["Laal Pul", "Lal Pull", "Laal Pull"] },
         { name: "Mughal Pura", time: "7:18 AM", lat: 31.5650, lng: 74.3750, coordinateStatus: "unverified", placeId: null, source: null, aliases: ["Mughalpura"] },
         { name: "Dharam Pura", time: "7:25 AM", lat: 31.5580, lng: 74.3620, coordinateStatus: "unverified", placeId: null, source: null, aliases: ["Dharampura"] },
-        { name: "New Campus (KSK)", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
+        { name: "New Campus", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
       ]
     },
     {
@@ -719,9 +718,9 @@ const UET_DATA = {
       notes: "Main Ferozepur Road arterial route connecting Model Town, Kalma Chowk & Ichra.",
       stops: [
         { name: "Nishtar Colony", time: "6:30 AM", lat: 31.4392, lng: 74.3645, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Chungi Amarsudu", time: "6:35 AM", lat: 31.4580, lng: 74.3620, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Chungi Amar sidhu", time: "6:35 AM", lat: 31.4580, lng: 74.3620, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "General Hospital", time: "6:40 AM", lat: 31.4720, lng: 74.3580, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Qanchi Stop", time: "6:42 AM", lat: 31.4810, lng: 74.3540, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Qainchi Stop", time: "6:42 AM", lat: 31.4810, lng: 74.3540, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Walton Stop", time: "6:44 AM", lat: 31.4880, lng: 74.3500, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Defence Mor", time: "6:45 AM", lat: 31.4920, lng: 74.3480, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Firdous Market", time: "6:52 AM", lat: 31.5050, lng: 74.3520, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
@@ -746,7 +745,7 @@ const UET_DATA = {
       arrivalTime: "07:50 AM",
       notes: "Covers Township, Peco Road, Akbar Chowk & Wapda Town.",
       stops: [
-        { name: "Mochi pura", time: "6:30 AM", lat: 31.4520, lng: 74.3150, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        
         { name: "Akbar chowk", time: "6:36 AM", lat: 31.4610, lng: 74.3050, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "M. Ali chowk", time: "6:40 AM", lat: 31.4580, lng: 74.2980, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Khokhar chowk", time: "6:42 AM", lat: 31.4550, lng: 74.2920, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
@@ -817,23 +816,24 @@ const UET_DATA = {
       routeNo: "06",
       campusId: "ksk",
       campus: "KSK",
-      name: "Ravi Hotel, Johar Town & Thokar Line",
-      startPoint: "Ravi Hotel",
+      name: "Mochi Pura, Johar Town & Thokar Line",
+      startPoint: "Mochi Pura",
       endPoint: "KSK New Campus",
       driverName: "Mr. Rehmat Ali",
       driverPhone: "0300-4112131",
       vehicleNo: "LRT-2034",
       arrivalTime: "07:50 AM",
-      notes: "Main Johar Town & Canal Road line via G-I Market & Thokar Niaz Baig.",
+      notes: "Main Johar Town & Canal Road line via G-1 Market & Thokar Niaz Baig.",
       stops: [
-        { name: "Ravi Hotel", time: "6:30 AM", lat: 31.4720, lng: 74.2910, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Allah Hoo chowk", time: "6:38 AM", lat: 31.4690, lng: 74.2820, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Shadewal chowk", time: "6:42 AM", lat: 31.4650, lng: 74.2750, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "G-I Market", time: "6:45 AM", lat: 31.4630, lng: 74.2710, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Khokhar chowk", time: "6:50 AM", lat: 31.4600, lng: 74.2660, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Expo Center", time: "6:55 AM", lat: 31.4680, lng: 74.2580, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Thokar Niaz baig", time: "7:00 AM", lat: 31.4730, lng: 74.2420, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "New Campus (KSK)", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
+        { name: "Mochi Pura", time: "6:30 AM", lat: 31.4720, lng: 74.2910, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Allah Hoo Chowk", time: "6:38 AM", lat: 31.4690, lng: 74.2820, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Shadiwal Chowk", time: "6:42 AM", lat: 31.4650, lng: 74.2750, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "G-1 Market", time: "6:45 AM", lat: 31.4630, lng: 74.2710, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Khokhar Chowk", time: "6:50 AM", lat: 31.4600, lng: 74.2660, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Expo Centre", time: "6:55 AM", lat: 31.4680, lng: 74.2580, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Thokar Niaz Baig", time: "7:00 AM", lat: 31.4730, lng: 74.2420, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Hanjarwal", time: "N/A", lat: 31.4770, lng: 74.2470, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "New Campus", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
       ]
     },
     {
@@ -855,12 +855,6 @@ const UET_DATA = {
         { name: "Phool Mandi", time: "7:00 AM", lat: 31.6180, lng: 74.2510, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Begum Kot", time: "7:20 AM", lat: 31.6310, lng: 74.2750, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Shahdara", time: "7:25 AM", lat: 31.6250, lng: 74.2880, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Kashmir Park", time: "7:27 AM", lat: 31.6290, lng: 74.2920, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Machis Factory", time: "7:30 AM", lat: 31.6350, lng: 74.2950, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Imamia colony", time: "7:35 AM", lat: 31.6420, lng: 74.2980, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Rachna Town", time: "7:40 AM", lat: 31.6580, lng: 74.3010, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Haider road", time: "7:43 AM", lat: 31.6750, lng: 74.3020, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Rana town", time: "7:45 AM", lat: 31.6920, lng: 74.3000, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "New Campus (KSK)", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
       ]
     },
@@ -909,10 +903,41 @@ const UET_DATA = {
         { name: "Kamoki", time: "6:55 AM", lat: 31.9760, lng: 74.2210, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Sadhoki", time: "7:05 AM", lat: 31.8850, lng: 74.2450, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Muridkey", time: "7:30 AM", lat: 31.8020, lng: 74.2620, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Ravi Riyan", time: "7:38 AM", lat: 31.7650, lng: 74.2750, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Ittehad Chemical", time: "7:42 AM", lat: 31.7480, lng: 74.2880, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "S.A Garden", time: "7:45 AM", lat: 31.7380, lng: 74.2920, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "New Campus (KSK)", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
+      ]
+    },
+    {
+      id: "ksk-09a",
+      routeNo: "9-A",
+      campusId: "ksk",
+      campus: "KSK",
+      name: "Muridke, Ferozewala & Rachna Town Line",
+      startPoint: "Muridke",
+      endPoint: "KSK New Campus",
+      driverName: "N/A",
+      driverPhone: "N/A",
+      vehicleNo: "N/A",
+      arrivalTime: "N/A",
+      notes: "Northern GT Road route via Muridke, Ferozewala & Rachna Town.",
+      stops: [
+        { name: "Muridke", time: "N/A", lat: 31.8020, lng: 74.2620, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Mujahid Hotel", time: "N/A", lat: 31.7920, lng: 74.2660, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "HBL", time: "N/A", lat: 31.7850, lng: 74.2690, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Bangla Puli", time: "N/A", lat: 31.7790, lng: 74.2730, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Officer Mill", time: "N/A", lat: 31.7730, lng: 74.2760, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "THQ", time: "N/A", lat: 31.7660, lng: 74.2800, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Mano Mill", time: "N/A", lat: 31.7590, lng: 74.2840, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Ravi Rayan", time: "N/A", lat: 31.7520, lng: 74.2870, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "SA Gardens", time: "N/A", lat: 31.7450, lng: 74.2910, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Kala Station", time: "N/A", lat: 31.7380, lng: 74.2940, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Kot Shahabuddin", time: "N/A", lat: 31.7320, lng: 74.2960, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Match Factory", time: "N/A", lat: 31.7250, lng: 74.2990, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Barkat Town", time: "N/A", lat: 31.7180, lng: 74.3020, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Imamia Colony", time: "N/A", lat: 31.7100, lng: 74.3060, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Ferozewala", time: "N/A", lat: 31.7030, lng: 74.3090, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Rachna Town", time: "N/A", lat: 31.6960, lng: 74.3120, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Rana Town", time: "N/A", lat: 31.6880, lng: 74.3150, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "New Campus", time: "N/A", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
       ]
     },
     {
@@ -936,8 +961,6 @@ const UET_DATA = {
         { name: "Murgi Khana", time: "7:04 AM", lat: 31.5310, lng: 74.3950, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Askari 9", time: "7:10 AM", lat: 31.5380, lng: 74.3820, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Sadar Gol Chakar", time: "7:18 AM", lat: 31.5490, lng: 74.3680, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Ghari Shahu", time: "7:22 AM", lat: 31.5620, lng: 74.3480, coordinateStatus: "unverified", placeId: null, source: null, aliases: ["Garhi Shahu"] },
-        { name: "Railway station", time: "7:25 AM", lat: 31.5720, lng: 74.3310, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "New Campus (KSK)", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
       ]
     },

@@ -65,7 +65,7 @@ test('all original dataset values remain unchanged after stripping added metadat
     for (const key of ['coordinateStatus','placeId','source','aliases']) delete stop[key];
   }
   const actual = createHash('sha256').update(JSON.stringify(data)).digest('hex');
-  assert.equal(actual, 'a06023af202497b7bdb547df915aac1ca61c3425aa6ce7da46deab00302f93d7');
+  assert.equal(actual, 'c1cd645b987aab9b25ba0d298cd90336eb0e0426760a4801538ddfbb74e680e8');
 });
 
 test('coordinate validator rejects missing, nonnumeric, nonfinite, and out-of-range values without coercion', () => {
