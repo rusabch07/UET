@@ -244,7 +244,8 @@ const NEARBY_ROUTE_CONFIG = Object.freeze({
   maxPickupDistanceKm: 1.5
 });
 
-/** Find individual campus pickup stops, preserving multiple stops on one route. */function findNearbyRoutes(userLat, userLng, campusFilter, config = NEARBY_ROUTE_CONFIG) {
+/** Find individual campus pickup stops, preserving multiple stops on one route. */
+function findNearbyRoutes(userLat, userLng, campusFilter, config = NEARBY_ROUTE_CONFIG) {
   const { nearbyRadiusKm, fallbackDistanceGapKm, maxPickupDistanceKm } = config;
   if (![nearbyRadiusKm, fallbackDistanceGapKm, maxPickupDistanceKm].every(value => Number.isFinite(value) && value >= 0) ||
       maxPickupDistanceKm < nearbyRadiusKm || maxPickupDistanceKm === 0) {
@@ -283,10 +284,9 @@ const NEARBY_ROUTE_CONFIG = Object.freeze({
   campusRoutes.forEach(route => {
     // Keep each stop separate so one route can provide multiple nearby options.
     route.stops.forEach((stop, index) => {
-      // Exclude final campus destination stop if it's the terminal destination
-      if (index === route.stops.length - 1 && route.stops.length > 1) {
-        return;
-      }
+      // Validate every stop, including the final stop; sequence is not a distance filter.
+      if (!Number.isFinite(stop.lat) || stop.lat < -90 || stop.lat > 90 ||
+          !Number.isFinite(stop.lng) || stop.lng < -180 || stop.lng > 180) return;
 
       const dist = calculateDistance(latitude, longitude, stop.lat, stop.lng);
       if (Number.isFinite(dist)) {
@@ -302,6 +302,15 @@ const NEARBY_ROUTE_CONFIG = Object.freeze({
 
   // Sort individual pickup stops by distance, not routes.
   stopCandidates.sort((a, b) => a.distanceKm - b.distanceKm);
+
+  // Opt-in developer diagnostics; no logging during normal browsing.
+  if (window.UET_DEBUG_NEARBY_ROUTES === true) {
+    stopCandidates.forEach(candidate => console.debug(
+      candidate.stop.name + ': ' + candidate.distanceKm.toFixed(3) + ' km',
+      { routeId: candidate.route.id, stopIndex: candidate.stopIndex,
+        withinNearbyRadius: candidate.distanceKm <= nearbyRadiusKm }
+    ));
+  }
 
   const nearestStop = stopCandidates[0] || null;
   if (!nearestStop || nearestStop.distanceKm > maxPickupDistanceKm) {
@@ -337,9 +346,15 @@ function runNearbyRouteSearch(latitude, longitude, location, source) {
       name: location.name,
       formattedAddress: location.formattedAddress || location.name,
       placeId: location.placeId || null,
-      source: source
+      source: source,
+      inputText: document.getElementById('main-location-input')?.value || ''
     };
-    if (source !== 'stop-search') appState.highlightedStop = null;
+    if (source !== 'stop-search') {
+      appState.highlightedStop = null;
+      appState.selectedStopSuggestion = null;
+      stopSearchVisibleMatches = [];
+      stopSearchActiveIndex = -1;
+    }
     appState.locationSearchError = null;
     appState.activeRecommendationIndex = 0;
     appState.recommendationResults = {
@@ -1016,6 +1031,13 @@ function findExactStopMatches(query, preferredCampusId = null) {
 function handleLocationSearch() {
   const input = document.getElementById('main-location-input');
   const query = input ? input.value : '';
+  // Reuse a resolved GPS/chip location only while its displayed text is unchanged.
+  const location = appState.currentLocation;
+  if (location && ['gps', 'quick-chip'].includes(location.source) && query &&
+      query === location.inputText && Number.isFinite(location.lat) && Number.isFinite(location.lng)) {
+    runNearbyRouteSearch(location.lat, location.lng, location, location.source);
+    return;
+  }
   if (appState.selectedStopSuggestion) {
     applySelectedUetStop(appState.selectedStopSuggestion);
     return;

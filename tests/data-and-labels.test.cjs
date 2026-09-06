@@ -346,3 +346,22 @@ test('schedule search covers all fields, abbreviations, normalization and empty 
  h.run("appState.routeScheduleQuery='zzzz-no-route';renderRoutesPage()");
  assert.ok(h.elements.get('routes-detail-container').innerHTML.includes('No matching routes found'));
 });
+
+test('three same-route stops inside 1.5 km survive and sort by geographic distance, not sequence', () => {
+ const h=app();
+ h.run(`var originalRoutes=UET_DATA.routes;var syntheticRoute={id:'test-main',campusId:'main',stops:[
+ {name:'Yateem Khana',lat:1.3/111.19492664455873,lng:0},
+ {name:'Flat Stop',lat:.35/111.19492664455873,lng:0},
+ {name:'Scheme Mor',lat:.8/111.19492664455873,lng:0}]};
+ UET_DATA.routes=[syntheticRoute,{id:'other-campus',campusId:'ksk',stops:[{name:'Other',lat:0,lng:0}]}];
+ var debugLogs=[];globalThis.console={debug:(...args)=>debugLogs.push(args)};
+ var result=findNearbyRoutes(0,0,'main');`);
+ assert.equal(h.run('JSON.stringify(result.matchingRoutes.map(i=>i.stop.name))'),JSON.stringify(['Flat Stop','Scheme Mor','Yateem Khana']));
+ assert.equal(h.run('result.nearestStop.stop.name'),'Flat Stop');
+ assert.equal(h.run('debugLogs.length'),0);
+ h.run('window.UET_DEBUG_NEARBY_ROUTES=true;findNearbyRoutes(0,0,"main")');
+ assert.equal(h.run('debugLogs.length'),3);
+ assert.equal(h.run('debugLogs[0][0]'),'Flat Stop: 0.350 km');
+ h.run('syntheticRoute.stops.push({name:"Invalid",lat:null,lng:0},{name:"Outside",lat:91,lng:0});var validated=findNearbyRoutes(0,0,"main")');
+ assert.equal(h.run('validated.matchingRoutes.length'),3);
+});

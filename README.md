@@ -59,3 +59,7 @@ Run `node tests/responsive-accessibility.cjs` with Playwright available and `CHR
 
 
 Timeline regression coverage also renders the Flat Stop search result, including origin, nearest-pickup, intermediate and destination markers. Each dot is checked against the line center at every target size/theme, including hover; marker diameter, continuous row connections and first/last line endpoints are checked. The centered CSS is shared by both timeline views.
+
+## Nearby distance diagnostics
+
+Set `window.UET_DEBUG_NEARBY_ROUTES = true` in the browser developer console, then retry GPS. The shared finder logs each valid selected-campus stop in distance order, its route/index and whether it is inside 1.5 km. Set the flag to false to stop logging. Every valid stop is evaluated, including the final stop; route sequence never excludes or prioritizes a candidate. Stored coordinates remain unchanged and unverified.

@@ -150,6 +150,7 @@ test('STEP 19: Same-route multiple nearby stops and different-route stops are pr
   assert.equal(route2Stops.length, 1, 'Must preserve nearby stops from different routes');
 });
 
+// Radius-only fixtures place terminal stops outside the radius; final stops are no longer excluded by sequence.
 // ── 4. Campus Isolation ──────────────────────────────────────────────────────
 test('STEP 19: Campus isolation strictly separates Main Campus and KSK Campus', () => {
   const app = createTestApp();
@@ -341,7 +342,7 @@ for (const campus of ['main', 'ksk']) {
           {
             id: 'selected',
             campusId: '${campus}',
-            stops: ${JSON.stringify(distances.map(d => ({ name: 'Test stop', lat: d, lng: 0 })))}.concat([{ name: 'Terminal', lat: 0, lng: 0 }])
+            stops: ${JSON.stringify(distances.map(d => ({ name: 'Test stop', lat: d, lng: 0 })))}.concat([{ name: 'Terminal', lat: 90, lng: 0 }])
           },
           {
             id: 'other',
@@ -374,7 +375,7 @@ test('1.5 km boundary: 1.49 km included, 1.50 km included, 1.51 km excluded', ()
           { name: 'Stop 1.49km', lat: 1.49, lng: 0 },
           { name: 'Stop 1.50km', lat: 1.50, lng: 0 },
           { name: 'Stop 1.51km', lat: 1.51, lng: 0 },
-          { name: 'Terminal Campus', lat: 0, lng: 0 }
+          { name: 'Terminal Campus', lat: 90, lng: 0 }
         ]
       }
     ];
@@ -404,7 +405,7 @@ test('User example: 0.4 km, 0.9 km, 1.3 km included; 1.6 km excluded', () => {
           { name: 'Stop B', lat: 0.9, lng: 0 },
           { name: 'Stop C', lat: 1.3, lng: 0 },
           { name: 'Stop D', lat: 1.6, lng: 0 },
-          { name: 'Terminal Campus', lat: 0, lng: 0 }
+          { name: 'Terminal Campus', lat: 90, lng: 0 }
         ]
       }
     ];
@@ -429,7 +430,7 @@ test('No nearby stop within 1.5 km shows exact message: No nearby UET bus stop f
         name: 'Far Route',
         stops: [
           { name: 'Stop Far', lat: 1.6, lng: 0 },
-          { name: 'Terminal Campus', lat: 0, lng: 0 }
+          { name: 'Terminal Campus', lat: 90, lng: 0 }
         ]
       }
     ];
@@ -457,7 +458,7 @@ test('Multiple stops on same route and multiple different routes preserved withi
         stops: [
           { name: 'R1-Stop1', lat: 1.2, lng: 0 },
           { name: 'R1-Stop2', lat: 0.3, lng: 0 },
-          { name: 'Terminal', lat: 0, lng: 0 }
+          { name: 'Terminal', lat: 90, lng: 0 }
         ]
       },
       {
@@ -468,7 +469,7 @@ test('Multiple stops on same route and multiple different routes preserved withi
         stops: [
           { name: 'R2-Stop1', lat: 0.8, lng: 0 },
           { name: 'R2-Stop2', lat: 1.7, lng: 0 },
-          { name: 'Terminal', lat: 0, lng: 0 }
+          { name: 'Terminal', lat: 90, lng: 0 }
         ]
       }
     ];
