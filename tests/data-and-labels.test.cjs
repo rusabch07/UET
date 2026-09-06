@@ -296,7 +296,12 @@ test('homepage renders current data totals and campus times without unsupported 
   assert.ok(html.includes(`<div class="stat-val">${stats.uniqueStops}</div>`));
   for (const campus of stats.campuses) {
     assert.ok(html.includes(`${campus.name} Routes`));
-    assert.ok(html.includes(`Scheduled arrival: ${campus.arrivalTimes.join(' / ')}`));
+    const details = [...html.matchAll(/class="stat-lbl stat-detail">([^<]+)<\/div>/g)].map(match => match[1]);
+    const detail = details[stats.campuses.indexOf(campus)];
+    assert.match(detail, campus.arrivalTimes.length === 1 ? /^Arrival: / : /^Arrivals: /);
+    const renderedTimes = detail.replace(/^Arrivals?: /, '').split(' • ').map(time => time.replace(/\s*AM$/i, '').trim());
+    assert.deepEqual(renderedTimes, Array.from(campus.arrivalTimes, time => time.replace(/\s*AM$/i, '').trim()),
+      campus.name + ': every scheduled arrival must remain visible, in order');
   }
   assert.doesNotMatch(html, /commuters|on-time|15,000/i);
   assert.doesNotMatch(fs.readFileSync(path.join(root,'index.html'),'utf8'), /Daily Student Commuters|19\+|120\+|15,000\+|On-Time Campus Arrival/);
@@ -364,4 +369,12 @@ test('three same-route stops inside 1.5 km survive and sort by geographic distan
  assert.equal(h.run('debugLogs[0][0]'),'Flat Stop: 0.350 km');
  h.run('syntheticRoute.stops.push({name:"Invalid",lat:null,lng:0},{name:"Outside",lat:91,lng:0});var validated=findNearbyRoutes(0,0,"main")');
  assert.equal(h.run('validated.matchingRoutes.length'),3);
+});
+
+test('arrival summary preserves single, multiple, and missing schedule information', () => {
+  const h = app();
+  assert.equal(h.run("formatCampusArrivalSummary({campusId:'ksk',arrivalTimes:['07:50 AM']})"), 'Arrival: 07:50 AM');
+  assert.equal(h.run("formatCampusArrivalSummary({campusId:'main',arrivalTimes:['07:40 AM','07:45 AM','07:50 AM']})"), 'Arrivals: 07:40 • 07:45 • 07:50');
+  assert.equal(h.run("formatCampusArrivalSummary({campusId:'main',arrivalTimes:[]})"), '');
+  assert.equal(h.run("formatCampusArrivalSummary({campusId:'main'})"), '');
 });
