@@ -2789,3 +2789,100 @@ button.pickup-option > span span { display: block; }
   .stops-timeline .timeline-item { grid-template-columns: var(--marker-column) minmax(0, 1fr); }
   .stops-timeline .timeline-time { grid-column: 2; justify-self: start; }
 }
+
+/* Header-only polish: stable brand grouping and one-line desktop navigation. */
+.app-header .header-container {
+  flex-wrap: nowrap;
+  align-items: center;
+  gap: 1rem;
+  padding-top: .6rem;
+  padding-bottom: .6rem;
+}
+.app-header .brand-logo {
+  flex: 0 0 auto;
+  min-width: 0;
+  max-width: none;
+  gap: .65rem;
+  font-size: 1rem;
+  line-height: 1.2;
+}
+.app-header .brand-logo-image {
+  width: 52px;
+  height: auto;
+  max-height: none;
+  object-fit: contain;
+  flex: 0 0 auto;
+  mix-blend-mode: lighten;
+}
+.app-header .brand-logo > div {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  flex-wrap: nowrap;
+  min-width: 0;
+  gap: .3rem;
+  line-height: 1.2;
+}
+.app-header .brand-logo > div > span:first-child {
+  white-space: nowrap;
+  overflow: visible;
+  text-overflow: clip;
+  line-height: 1.2;
+}
+.app-header .brand-logo .brand-badge {
+  flex: 0 0 auto;
+  white-space: nowrap;
+  font-size: .6rem;
+  line-height: 1.2;
+  padding: .2rem .45rem;
+}
+.app-header .header-actions {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: center;
+  gap: .5rem;
+}
+.app-header .header-actions > button {
+  width: 40px;
+  height: 40px;
+  flex: 0 0 40px;
+}
+@media (min-width: 1025px) {
+  .app-header .nav-links {
+    flex: 1 1 auto;
+    flex-wrap: nowrap;
+    justify-content: flex-end;
+    gap: .3rem;
+  }
+  .app-header .nav-links li { flex: 0 0 auto; }
+  .app-header .nav-btn {
+    white-space: nowrap;
+    line-height: 1.2;
+    min-height: 40px;
+    font-size: .85rem;
+    padding: .55rem .65rem;
+    gap: .4rem;
+  }
+  .app-header .nav-btn svg { width: 20px; height: 20px; flex: 0 0 20px; }
+}
+@media (min-width: 1025px) and (max-width: 1200px) {
+  .app-header .header-container { gap: .65rem; }
+  .app-header .brand-logo { font-size: .85rem; }
+  .app-header .nav-btn { font-size: .78rem; padding-inline: .45rem; }
+}
+@media (max-width: 1024px) {
+  .app-header .brand-logo { flex: 1 1 auto; }
+  .app-header .brand-logo-image { width: 46px; }
+}
+@media (max-width: 480px) {
+  .app-header .header-container { gap: .5rem; padding: .55rem .75rem; }
+  .app-header .brand-logo { gap: .5rem; font-size: .75rem; }
+  .app-header .brand-logo-image { width: 40px; }
+  .app-header .brand-logo .brand-badge { font-size: .55rem; padding: .18rem .35rem; }
+}
+@media (max-width: 339px) {
+  .app-header .header-container { gap: .35rem; padding-inline: .5rem; }
+  .app-header .brand-logo { font-size: .7rem; }
+  .app-header .brand-logo-image { width: 34px; }
+  .app-header .brand-logo > div > span:first-child { white-space: normal; }
+}
