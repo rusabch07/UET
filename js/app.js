@@ -13,6 +13,7 @@ let appState = {
   favorites: JSON.parse(localStorage.getItem('uet_fav_routes') || '[]'),
   selectedRouteId: null,
   routeListScrollY: 0,
+  homeStatsAnimated: false,
   routeListState: null, // campus, query and scroll position before opening details
   map: null,
   markers: []
@@ -1124,12 +1125,67 @@ function renderHomeStats() {
     <div class="stat-card">
       <div class="stat-icon"><i class="lucide-${card.icon}"></i></div>
       <div class="stat-content">
-        <div class="stat-val">${card.value}</div>
+        <div class="stat-val" data-target="${card.value}">${appState.homeStatsAnimated ? card.value : 0}</div>
         <div class="stat-lbl stat-title">${card.label}</div>
         ${card.detail ? `<div class="stat-lbl stat-detail">${card.detail}</div>` : ''}
       </div>
     </div>
   `).join('');
+  observeHomeStats();
+}
+
+let homeStatsObserver = null;
+
+function animateHomeStats() {
+  if (appState.homeStatsAnimated) return;
+  appState.homeStatsAnimated = true;
+
+  const statNumbers = document.querySelectorAll('#home-stats .stat-val[data-target]');
+  const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+  statNumbers.forEach(number => {
+    const target = Number(number.dataset.target);
+    if (!Number.isFinite(target)) return;
+    if (reduceMotion) {
+      number.textContent = String(target);
+      return;
+    }
+
+    const duration = 1600;
+    const startTime = performance.now();
+    const update = (now) => {
+      const progress = Math.min((now - startTime) / duration, 1);
+      const easedProgress = 1 - Math.pow(1 - progress, 3);
+      number.textContent = String(Math.floor(target * easedProgress));
+      if (progress < 1) {
+        requestAnimationFrame(update);
+      } else {
+        number.textContent = String(target);
+      }
+    };
+    requestAnimationFrame(update);
+  });
+}
+
+function observeHomeStats() {
+  const container = document.getElementById('home-stats');
+  if (!container || appState.homeStatsAnimated) return;
+
+  if (homeStatsObserver) {
+    homeStatsObserver.disconnect();
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    animateHomeStats();
+    return;
+  }
+
+  homeStatsObserver = new IntersectionObserver((entries, observer) => {
+    if (!entries.some(entry => entry.isIntersecting)) return;
+    observer.disconnect();
+    homeStatsObserver = null;
+    animateHomeStats();
+  }, { threshold: 0.2 });
+  homeStatsObserver.observe(container);
 }
 // Render Home Page
 function renderHomePage() {
