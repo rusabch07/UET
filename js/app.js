@@ -1122,10 +1122,10 @@ function renderHomeStats() {
     detail: formatCampusArrivalSummary(campus)
   }));
   container.innerHTML = cards.map(card => `
-    <div class="stat-card">
+    <div class="stat-card" data-stat-target="${card.value}">
       <div class="stat-icon"><i class="lucide-${card.icon}"></i></div>
       <div class="stat-content">
-        <div class="stat-val" data-target="${card.value}">${appState.homeStatsAnimated ? card.value : 0}</div>
+        <div class="stat-val">${card.value}</div>
         <div class="stat-lbl stat-title">${card.label}</div>
         ${card.detail ? `<div class="stat-lbl stat-detail">${card.detail}</div>` : ''}
       </div>
@@ -1135,21 +1135,28 @@ function renderHomeStats() {
 }
 
 let homeStatsObserver = null;
+let homeStatsVisibilityHandler = null;
 
 function animateHomeStats() {
   if (appState.homeStatsAnimated) return;
   appState.homeStatsAnimated = true;
+  if (homeStatsVisibilityHandler) {
+    window.removeEventListener?.('scroll', homeStatsVisibilityHandler);
+    homeStatsVisibilityHandler = null;
+  }
 
-  const statNumbers = document.querySelectorAll('#home-stats .stat-val[data-target]');
+  const statCards = document.querySelectorAll('#home-stats .stat-card[data-stat-target]');
   const reduceMotion = window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-  statNumbers.forEach(number => {
-    const target = Number(number.dataset.target);
+  statCards.forEach(card => {
+    const number = card.querySelector('.stat-val');
+    const target = Number(card.dataset.statTarget);
     if (!Number.isFinite(target)) return;
-    if (reduceMotion) {
+    if (reduceMotion || typeof performance === 'undefined' || typeof requestAnimationFrame !== 'function') {
       number.textContent = String(target);
       return;
     }
 
+    number.textContent = '0';
     const duration = 1600;
     const startTime = performance.now();
     const update = (now) => {
@@ -1179,6 +1186,14 @@ function observeHomeStats() {
     return;
   }
 
+  homeStatsVisibilityHandler = () => {
+    const bounds = container.getBoundingClientRect();
+    if (bounds.top < window.innerHeight && bounds.bottom > 0) {
+      animateHomeStats();
+    }
+  };
+  window.addEventListener('scroll', homeStatsVisibilityHandler, { passive: true });
+
   homeStatsObserver = new IntersectionObserver((entries, observer) => {
     if (!entries.some(entry => entry.isIntersecting)) return;
     observer.disconnect();
@@ -1186,6 +1201,7 @@ function observeHomeStats() {
     animateHomeStats();
   }, { threshold: 0.2 });
   homeStatsObserver.observe(container);
+  homeStatsVisibilityHandler();
 }
 // Render Home Page
 function renderHomePage() {
