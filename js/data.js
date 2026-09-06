@@ -163,7 +163,7 @@ const UET_DATA = {
         { name: "Mian Bolay Wala", time: "6:42 AM", lat: 31.4880, lng: 74.3510, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Adil Hospital", time: "6:43 AM", lat: 31.4860, lng: 74.3550, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Bilal Store", time: "6:48 AM", lat: 31.4810, lng: 74.3610, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Laalak Chowk", time: "6:55 AM", lat: 31.4720, lng: 74.3750, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Laalak Chowk", time: "6:55 AM", lat: 31.4720, lng: 74.3750, coordinateStatus: "unverified", placeId: null, source: null, aliases: ["Laal Pull", "Lal Pull"] },
         { name: "Police Choki", time: "7:00 AM", lat: 31.4780, lng: 74.3810, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "LESCO", time: "7:05 AM", lat: 31.4820, lng: 74.3850, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Total Pump", time: "7:07 AM", lat: 31.4850, lng: 74.3890, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
@@ -697,7 +697,7 @@ const UET_DATA = {
         { name: "Madina Town", time: "6:58 AM", lat: 31.5750, lng: 74.4120, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Taj Bagh", time: "7:05 AM", lat: 31.5695, lng: 74.4050, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Fateh Garh", time: "7:08 AM", lat: 31.5710, lng: 74.3980, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "New Pull", time: "7:09 AM", lat: 31.5700, lng: 74.3890, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "New Pull", time: "7:09 AM", lat: 31.5700, lng: 74.3890, coordinateStatus: "unverified", placeId: null, source: null, aliases: ["Laal Pull", "Lal Pull"] },
         { name: "Mughal Pura", time: "7:18 AM", lat: 31.5650, lng: 74.3750, coordinateStatus: "unverified", placeId: null, source: null, aliases: ["Mughalpura"] },
         { name: "Dharam Pura", time: "7:25 AM", lat: 31.5580, lng: 74.3620, coordinateStatus: "unverified", placeId: null, source: null, aliases: ["Dharampura"] },
         { name: "New Campus", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
