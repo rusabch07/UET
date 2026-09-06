@@ -916,37 +916,70 @@ function initUIEvents() {
   });
 }
 
-// Geolocation Handler - Uses pure browser Geolocation API coordinates
+// Geolocation starts synchronously from the Detect My Area click handler.
+let geolocationInProgress = false;
 function detectUserGeolocation() {
+  const button = document.getElementById('btn-locate-me');
+  if (geolocationInProgress || button?.disabled) return;
+
   if (!navigator.geolocation) {
+    SearchLoader.hide();
     showLocationSearchError('Geolocation is not supported by your browser. Please search a UET bus stop.');
     return;
   }
 
+  geolocationInProgress = true;
   SearchLoader.show('gps');
-  navigator.geolocation.getCurrentPosition(
-    (pos) => {
-      const { latitude, longitude } = pos.coords;
-      const input = document.getElementById('main-location-input');
-      if (input && Number.isFinite(latitude) && Number.isFinite(longitude)) {
-        input.value = `GPS (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`;
-      }
-      runNearbyRouteSearch(latitude, longitude, {
-        name: 'Your Current GPS Location',
-        formattedAddress: 'Your Current GPS Location'
-      }, 'gps');
-    },
-    (err) => {
-      const message = err.code === 1
-        ? 'Location permission was denied. Please allow access or search a UET bus stop.'
-        : err.code === 3
-          ? 'Location detection timed out. Please try again or search a UET bus stop.'
-          : 'Your location is unavailable. Please try again or search a UET bus stop.';
-      SearchLoader.hide();
-      showLocationSearchError(message);
-    },
-    { enableHighAccuracy: true, timeout: 10000, maximumAge: 0 }
-  );
+  let retried = false;
+
+  function fail(err) {
+    // Permission denial needs user intervention, never an automatic retry.
+    if (!retried && (err.code === 2 || err.code === 3)) {
+      retried = true;
+      requestPosition();
+      return;
+    }
+    geolocationInProgress = false;
+    const isIOS = /iPad|iPhone|iPod/.test(navigator.userAgent || '') ||
+      (navigator.platform === 'MacIntel' && navigator.maxTouchPoints > 1);
+    const message = err.code === 1
+      ? isIOS
+        ? 'Location permission was denied. Enable location access in your iPhone/iPad Safari settings and Settings > Privacy & Security > Location Services, then reload this page. Or search a UET bus stop.'
+        : 'Location permission was denied. Please allow access or search a UET bus stop.'
+      : err.code === 3
+        ? 'Location detection timed out. Please try again or search a UET bus stop.'
+        : 'Your location is unavailable. Check that Location Services is enabled, or search a UET bus stop.';
+    SearchLoader.hide();
+    showLocationSearchError(message);
+  }
+
+  function requestPosition() {
+    try {
+      navigator.geolocation.getCurrentPosition(
+        (pos) => {
+          geolocationInProgress = false;
+          const { latitude, longitude } = pos.coords;
+          const input = document.getElementById('main-location-input');
+          if (input && Number.isFinite(latitude) && Number.isFinite(longitude)) {
+            input.value = `GPS (${latitude.toFixed(4)}, ${longitude.toFixed(4)})`;
+          }
+          runNearbyRouteSearch(latitude, longitude, {
+            name: 'Your Current GPS Location',
+            formattedAddress: 'Your Current GPS Location'
+          }, 'gps');
+        },
+        fail,
+        // Allow a recent cached/network fix, including on the one bounded retry.
+        { enableHighAccuracy: false, timeout: 12000, maximumAge: 60000 }
+      );
+    } catch (err) {
+      // Synchronous API failures must also release the loader and request guard.
+      retried = true;
+      fail({ code: err.name === 'SecurityError' ? 1 : 2 });
+    }
+  }
+
+  requestPosition();
 }
 function normalizeStopSearchText(value) {
   if (typeof value !== 'string') return '';
