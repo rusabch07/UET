@@ -55,7 +55,7 @@ test('all rendered route views avoid duplicate prefixes for every route', () => 
   assert.doesNotMatch(source, /\$\{(?:item\.)?route\.routeNo[^}]*\}/);
 });
 
-test('all original dataset values remain unchanged after stripping added metadata', () => {
+test('committed route dataset remains unchanged after stripping added metadata', () => {
   const data = loadData();
   for (const route of data.routes) for (const stop of route.stops) {
     assert.equal(stop.coordinateStatus, 'unverified');
@@ -65,7 +65,8 @@ test('all original dataset values remain unchanged after stripping added metadat
     for (const key of ['coordinateStatus','placeId','source','aliases']) delete stop[key];
   }
   const actual = createHash('sha256').update(JSON.stringify(data)).digest('hex');
-  assert.equal(actual, 'c1cd645b987aab9b25ba0d298cd90336eb0e0426760a4801538ddfbb74e680e8');
+  // Baseline includes the four stop-name corrections committed in 3290eb9.
+  assert.equal(actual, 'd2b06c46e90bde7cdb990e323b2af5d6aa3a48bb3e064171a3f6ac9e3c92b1f5');
 });
 
 test('coordinate validator rejects missing, nonnumeric, nonfinite, and out-of-range values without coercion', () => {
