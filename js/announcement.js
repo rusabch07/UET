@@ -1,6 +1,5 @@
 // Homepage announcement only: no route data, GPS, or shuttle rendering lives here.
 (() => {
-  const storageKey = 'uet_ksk_announcement_seen';
   let shown = false;
   let savedScroll = null;
   let returnFocus = null;
@@ -11,6 +10,7 @@
     if (activeAccessibleLayer?.root === modal) closeAccessibleLayer(false);
     modal.hidden = true;
     modal.inert = true;
+    shown = false;
     modal.setAttribute('aria-hidden', 'true');
     document.documentElement.classList.remove('ksk-announcement-open');
     document.body.classList.remove('ksk-announcement-open');
@@ -30,11 +30,13 @@
   function showAnnouncement() {
     const modal = document.getElementById('ksk-announcement');
     if (shown || !modal || appState.activePage !== 'home' || activeAccessibleLayer) return;
-    try {
-      if (sessionStorage.getItem(storageKey)) return;
-      // Mark on display so refreshing an open popup cannot repeat it this session.
-      sessionStorage.setItem(storageKey, '1');
-    } catch (_) { /* Storage may be disabled; the in-memory flag still prevents repeats. */ }
+    const effectiveDate = new Date(2026, 8, 14);
+    const description = document.getElementById('ksk-announcement-description');
+    if (description) {
+      description.textContent = new Date() >= effectiveDate
+        ? 'Hourly shuttle service is now available between UET Main Campus and New Campus (KSK).'
+        : 'Hourly shuttle service will be available between UET Main Campus and New Campus (KSK) from 14 September 2026.';
+    }
     shown = true;
     returnFocus = document.activeElement;
     savedScroll = {x:window.scrollX, y:window.scrollY};
