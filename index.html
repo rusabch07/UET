@@ -341,6 +341,21 @@
 
   </main>
 
+  <!-- Session-only homepage announcement; links to the existing shuttle view. -->
+  <div id="ksk-announcement" class="ksk-announcement-overlay" role="dialog" aria-modal="true" aria-labelledby="ksk-announcement-title" aria-describedby="ksk-announcement-description ksk-announcement-note" aria-hidden="true" tabindex="-1" hidden inert>
+    <div class="ksk-announcement-card">
+      <button id="ksk-announcement-close" class="ksk-announcement-close" type="button" aria-label="Close shuttle announcement">×</button>
+      <div class="ksk-announcement-celebration" aria-hidden="true">🎉</div>
+      <h2 id="ksk-announcement-title">Good News for KSK Students!</h2>
+      <p id="ksk-announcement-description">Hourly shuttle service is now available between UET Main Campus and New Campus (KSK).</p>
+      <p id="ksk-announcement-note">8 scheduled trips are available throughout the day.</p>
+      <div class="ksk-announcement-actions">
+        <button id="ksk-announcement-view" class="ksk-announcement-primary" type="button">View Shuttle Service</button>
+        <button id="ksk-announcement-later" class="ksk-announcement-secondary" type="button">Maybe Later</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Destination-only map options; each anchor opens directly from its own tap. -->
   <div id="directions-modal" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="directions-dialog-title" aria-describedby="directions-stop-context" aria-hidden="true" tabindex="-1" inert>
     <div class="modal-content directions-sheet">
@@ -441,6 +456,7 @@
   <script src="js/data.js"></script>
   <script src="js/shuttle.js"></script>
   <script src="js/app.js"></script>
+  <script src="js/announcement.js"></script>
 
 </body>
 </html>

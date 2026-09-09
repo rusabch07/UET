@@ -15,7 +15,7 @@ if (fs.existsSync(oldConfig)) fs.unlinkSync(oldConfig);
 fs.writeFileSync(path.join(output, '.nojekyll'), '');
 // Version deployed assets by their actual bytes; keep project-relative Pages URLs.
 let html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
-for (const asset of ['css/styles.css', 'js/data.js', 'js/shuttle.js', 'js/app.js']) {
+for (const asset of ['css/styles.css', 'js/data.js', 'js/shuttle.js', 'js/app.js', 'js/announcement.js']) {
   const version = createHash('sha256').update(fs.readFileSync(path.join(output, asset))).digest('hex').slice(0, 16);
   const attribute = asset.endsWith('.css') ? 'href' : 'src';
   const original = attribute + '="' + asset + '"';
