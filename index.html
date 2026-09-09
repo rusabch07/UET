@@ -79,6 +79,7 @@
             <i class="lucide-phone"></i> Transport Office
           </button>
         </li>
+        <li><button class="nav-btn" data-page="shuttle">🚌 Shuttle Service</button></li>
       </ul>
 
       <div class="header-actions">
@@ -125,6 +126,7 @@
         <i class="lucide-phone"></i>
         <span>Transport Office</span>
       </a>
+      <a href="#shuttle" class="mobile-menu-item" data-page="shuttle"><span aria-hidden="true">🚌</span><span>Shuttle Service</span></a>
     </nav>
   </aside>
 
@@ -234,6 +236,10 @@
       <div id="routes-detail-container">
         <!-- Dynamically rendered by renderRoutesPage() -->
       </div>
+    </section>
+
+    <section id="page-shuttle" class="page-section" aria-label="KSK Shuttle Service">
+      <div id="shuttle-content"></div>
     </section>
 
     <!-- PAGE 5: SAVED / FAVORITES PAGE -->
@@ -433,6 +439,7 @@
 
   <!-- App Data and Scripts -->
   <script src="js/data.js"></script>
+  <script src="js/shuttle.js"></script>
   <script src="js/app.js"></script>
 
 </body>

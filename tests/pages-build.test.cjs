@@ -11,9 +11,9 @@ test('Pages build deploys current bytes and automatically changes relative asset
   try {
     for (const dir of ['scripts', 'css', 'js', 'assets', '_site/js']) fs.mkdirSync(path.join(fixture, dir), { recursive: true });
     fs.copyFileSync(path.join(__dirname, '../scripts/build-pages.cjs'), path.join(fixture, 'scripts/build-pages.cjs'));
-    const html = '<link rel="stylesheet" href="css/styles.css"><script src="js/data.js"></script><script src="js/app.js"></script>';
+    const html = '<link rel="stylesheet" href="css/styles.css"><script src="js/data.js"></script><script src="js/shuttle.js"></script><script src="js/app.js"></script>';
     fs.writeFileSync(path.join(fixture, 'index.html'), html);
-    const assets = ['css/styles.css', 'js/data.js', 'js/app.js'];
+    const assets = ['css/styles.css', 'js/data.js', 'js/shuttle.js', 'js/app.js'];
     for (const asset of assets) fs.writeFileSync(path.join(fixture, asset), 'current ' + asset);
     fs.writeFileSync(path.join(fixture, '_site/js/app.js'), 'stale app');
     fs.writeFileSync(path.join(fixture, 'CNAME'), 'example.org');

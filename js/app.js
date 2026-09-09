@@ -660,6 +660,7 @@ function navigateToPage(pageId, { resetScroll = true, updateHistory = true, rout
     appState.selectedRouteId = route?.id || null;
     renderRoutesPage();
   }
+  if (pageId === 'shuttle') renderShuttlePage();
   appState.activePage = pageId;
   document.querySelectorAll('.page-section').forEach(sec => {
     sec.classList.remove('active');
@@ -2088,7 +2089,7 @@ function parseNavigationHash(hash) {
     return { page: 'routes', routeId: route?.id || null,
       hash: route ? `#routes/${encodeURIComponent(route.id)}` : '#routes' };
   }
-  const page = ['home','result','favorites','notices','contact'].includes(raw) ? raw : 'home';
+  const page = ['home','result','favorites','notices','contact','shuttle'].includes(raw) ? raw : 'home';
   return {page, routeId:null, hash:`#${page}`};
 }
 

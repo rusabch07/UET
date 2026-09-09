@@ -2896,3 +2896,44 @@ button.pickup-option > span span { display: block; }
   #directions-modal { align-items: flex-end; padding: .75rem; padding-bottom: max(.75rem, env(safe-area-inset-bottom)); }
   #directions-modal .directions-sheet { max-height: 85vh; }
 }
+
+/* Dedicated shuttle view. Timeline geometry is independent of stop text. */
+#page-shuttle { min-width: 0; }
+.shuttle-heading h1 { font-size: clamp(1.65rem, 3vw, 2.4rem); line-height: 1.2; }
+.shuttle-heading p { color: var(--text-muted); margin-top: .65rem; }
+.shuttle-summary { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; padding: 1rem 1.25rem; margin: 1.5rem 0 .65rem; border: 1px solid var(--border-light); border-radius: var(--radius-md); background: var(--bg-surface-highlight); }
+.shuttle-summary span, .shuttle-note, .shuttle-eyebrow { color: var(--text-muted); }
+.shuttle-note { font-size: .85rem; }
+.shuttle-direction { margin-top: 2rem; }
+.shuttle-direction h2 { font-size: 1.3rem; margin-bottom: 1rem; }
+.shuttle-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+.shuttle-card, .shuttle-detail { min-width: 0; padding: 1.5rem; background: var(--bg-surface); border: 1px solid var(--border-light); border-radius: var(--radius-lg); box-shadow: var(--shadow-sm); }
+.shuttle-card { display: flex; flex-direction: column; gap: 1rem; }
+.shuttle-card h3 { font-size: 1.05rem; line-height: 1.5; }
+.shuttle-departure { display: flex; align-items: center; flex-wrap: wrap; gap: .5rem; }
+.shuttle-time { display: inline-block; width: fit-content; white-space: nowrap; font-size: .9rem; font-weight: 700; font-variant-numeric: tabular-nums; color: var(--success-text); background: var(--success-soft); border-radius: var(--radius-sm); padding: .35rem .6rem; }
+.shuttle-endpoints { display: grid; gap: .65rem; }
+.shuttle-endpoints dt { font-size: .75rem; color: var(--text-muted); }
+.shuttle-endpoints dd { font-size: .95rem; font-weight: 600; }
+.shuttle-view { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: .5rem; min-height: 48px; padding: .75rem; border-radius: var(--radius-sm); background: var(--accent); color: var(--primary-dark); font-weight: 700; text-align: left; }
+.shuttle-view:hover { background: var(--accent-hover); }
+#page-shuttle button:focus-visible { outline: 3px solid var(--border-focus); outline-offset: 3px; }
+.shuttle-back { margin-bottom: 1rem; min-height: 48px; white-space: normal; }
+.shuttle-detail { max-width: 900px; margin-inline: auto; padding: clamp(1rem, 4vw, 2.5rem); }
+.shuttle-detail h1 { font-size: clamp(1.5rem, 3vw, 2rem); margin: .5rem 0 1rem; }
+.shuttle-detail .shuttle-endpoints { grid-template-columns: repeat(2, minmax(0, 1fr)); padding-block: 1.5rem; margin-bottom: 1.5rem; border-bottom: 1px solid var(--border-light); }
+.shuttle-detail h2 { font-size: 1.2rem; margin-bottom: .4rem; }
+.shuttle-timeline { list-style: none; margin-top: 1.5rem; padding: 0; }
+.shuttle-timeline li { display: grid; grid-template-columns: 40px minmax(0, 1fr); position: relative; min-width: 0; }
+.shuttle-marker { position: relative; }
+.shuttle-marker::before { content: ''; position: absolute; width: 2px; left: 50%; transform: translateX(-50%); top: 20px; bottom: -20px; background: var(--success); }
+.shuttle-marker::after { content: ''; position: absolute; left: 50%; transform: translateX(-50%); top: 14px; width: 12px; height: 12px; border: 3px solid var(--success); border-radius: 50%; background: var(--bg-surface); }
+.shuttle-timeline li:last-child .shuttle-marker::before { display: none; }
+.shuttle-stop { min-width: 0; display: flex; align-items: flex-start; justify-content: space-between; flex-wrap: wrap; gap: .5rem 1rem; padding: .25rem 0 1.5rem .5rem; }
+.shuttle-stop > span:first-child { flex: 1 1 140px; overflow-wrap: anywhere; padding-top: .25rem; }
+.shuttle-timeline li:last-child .shuttle-stop { padding-bottom: .25rem; }
+@media (max-width: 1100px) { .shuttle-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) { .shuttle-card { padding: 1.15rem; } .shuttle-timeline li { grid-template-columns: 32px minmax(0, 1fr); } }
+@media (max-width: 479px) { .shuttle-grid { grid-template-columns: minmax(0, 1fr); } }
+/* Allow the additional desktop destination to wrap without crowding the header. */
+@media (min-width: 1025px) { .app-header .nav-links { flex-wrap: wrap; } }

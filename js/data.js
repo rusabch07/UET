@@ -299,7 +299,7 @@ const UET_DATA = {
         { name: "Jinnah Hospital", time: "7:10 AM", lat: 31.4850, lng: 74.2980, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Fardoos Markeet", time: "7:15 AM", lat: 31.5050, lng: 74.3520, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Hussain Chowk", time: "7:20 AM", lat: 31.5090, lng: 74.3460, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Main Markeet", time: "7:25 AM", lat: 31.5180, lng: 74.3490, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Main Market", time: "7:25 AM", lat: 31.5180, lng: 74.3490, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "UET Main Campus", time: "7:45 AM", lat: 31.5794, lng: 74.3562, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
       ]
     },
@@ -374,7 +374,7 @@ const UET_DATA = {
         { name: "Muslim Town Mor", time: "7:20 AM", lat: 31.5150, lng: 74.3180, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Achra Mor", time: "7:23 AM", lat: 31.5280, lng: 74.3210, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Shama Stop", time: "7:25 AM", lat: 31.5350, lng: 74.3180, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Abid Markeet", time: "7:30 AM", lat: 31.5420, lng: 74.3150, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Abid Market", time: "7:30 AM", lat: 31.5420, lng: 74.3150, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Ganga ram markeet", time: "7:33 AM", lat: 31.5480, lng: 74.3120, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "UET Main Campus", time: "7:45 AM", lat: 31.5794, lng: 74.3562, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
       ]
@@ -453,7 +453,7 @@ const UET_DATA = {
         { name: "Allama Iqbal Town Tainki # 4", time: "6:55 AM", lat: 31.5180, lng: 74.2850, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Moon Markeet", time: "7:00 AM", lat: 31.5210, lng: 74.2820, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Kali Kothi Stop", time: "7:02 AM", lat: 31.5240, lng: 74.2780, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Darbar Stop Sabza Zar", time: "7:04 AM", lat: 31.5280, lng: 74.2700, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Darbar Stop Sabzazar", time: "7:04 AM", lat: 31.5280, lng: 74.2700, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Ground Stop", time: "7:06 AM", lat: 31.5220, lng: 74.2720, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Liaqat Chowk", time: "7:10 AM", lat: 31.5180, lng: 74.2750, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "UET Main Campus", time: "7:50 AM", lat: 31.5794, lng: 74.3562, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
@@ -475,7 +475,7 @@ const UET_DATA = {
       stops: [
         { name: "Akbari Store", time: "6:50 AM", lat: 31.5020, lng: 74.2620, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Dubai Chowk", time: "6:52 AM", lat: 31.5050, lng: 74.2650, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Kareem Markeet", time: "6:55 AM", lat: 31.5180, lng: 74.2800, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
+        { name: "Kareem Market", time: "6:55 AM", lat: 31.5180, lng: 74.2800, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Multan Road", time: "7:02 AM", lat: 31.5120, lng: 74.2720, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Awan Town", time: "7:03 AM", lat: 31.5080, lng: 74.2680, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
         { name: "Shah Noor", time: "7:09 AM", lat: 31.5150, lng: 74.2750, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
