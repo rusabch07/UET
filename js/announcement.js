@@ -62,7 +62,7 @@
         closeAnnouncement();
       }
     }, true);
-    // Run after the existing initial hash routing and scroll restoration.
-    setTimeout(showAnnouncement, 0);
+    // Open as soon as the modal elements and initial page state are available.
+    showAnnouncement();
   });
 })();

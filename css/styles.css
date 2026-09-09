@@ -2917,6 +2917,16 @@ button.pickup-option > span span { display: block; }
 .shuttle-endpoints dd { font-size: .95rem; font-weight: 600; }
 .shuttle-view { margin-top: auto; display: flex; justify-content: space-between; align-items: center; gap: .5rem; min-height: 48px; padding: .75rem; border-radius: var(--radius-sm); background: var(--accent); color: var(--primary-dark); font-weight: 700; text-align: left; }
 .shuttle-view:hover { background: var(--accent-hover); }
+@media (hover: hover) and (pointer: fine) {
+  .shuttle-card { transition: transform 200ms ease, border-color 200ms ease, box-shadow 200ms ease; }
+  .shuttle-card:hover { transform: translateY(-3px); border-color: var(--border-focus); box-shadow: var(--shadow-md); }
+  .shuttle-view span[aria-hidden="true"] { display: inline-block; transition: transform 180ms ease; }
+  .shuttle-view:hover span[aria-hidden="true"] { transform: translateX(3px); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .shuttle-card { transition: none; }
+  .shuttle-view span[aria-hidden="true"] { transition: none; }
+}
 #page-shuttle button:focus-visible { outline: 3px solid var(--border-focus); outline-offset: 3px; }
 .shuttle-back { margin-bottom: 1rem; min-height: 48px; white-space: normal; }
 .shuttle-detail { max-width: 900px; margin-inline: auto; padding: clamp(1rem, 4vw, 2.5rem); }
