@@ -65,8 +65,8 @@ test('committed route dataset remains unchanged after stripping added metadata',
     for (const key of ['coordinateStatus','placeId','source','aliases']) delete stop[key];
   }
   const actual = createHash('sha256').update(JSON.stringify(data)).digest('hex');
-  // Baseline includes the four stop-name corrections committed in 3290eb9.
-  assert.equal(actual, 'd2b06c46e90bde7cdb990e323b2af5d6aa3a48bb3e064171a3f6ac9e3c92b1f5');
+  // Baseline includes the independently transcribed official KSK Routes 11–15.
+  assert.equal(actual, '9ddad98588a2a7b2c398adebba4521abd47a13fb75d3a486936d7d639c30573c');
 });
 
 test('coordinate validator rejects missing, nonnumeric, nonfinite, and out-of-range values without coercion', () => {
@@ -87,7 +87,12 @@ test('audit reports suspicious duplicates without modifying stops or merging rou
   assert.equal(result.duplicateCoordinates[0].suspicious, true);
   assert.equal(result.duplicateCoordinates[0].stops.length, 3);
   assert.equal(JSON.stringify(routes), before);
-  assert.equal(auditStopCoordinates(loadData().routes).invalidCoordinates.length, 0);
+  const missing = auditStopCoordinates(loadData().routes).invalidCoordinates;
+  const expected = [11,12,13,14,15].flatMap(n => (n < 14
+    ? ['Sultan Pura','Sheran wala','Lari ada gol chakr']
+    : ['Sultan Pura','Garhi Shahu chowk','Railway Station','Sheran wala','Lari ada gol chakr'])
+    .map(name => ['ksk-'+n,name]));
+  assert.deepEqual(missing.map(s=>[s.routeId,s.name]),expected);
 });
 // Informational metadata must not change any functional decision or generated UI.
 function setMetadataVariant(h, variant, includeAliases = true) {
@@ -217,6 +222,7 @@ test('directions always use validated coordinates and walking mode without Place
   }
   assert.ok(urlFor({lat:0,lng:0}));
   for (const route of loadData().routes) for (const stop of route.stops) {
+    if (stop.lat === null || stop.lng === null) { assert.equal(urlFor(stop), null); continue; }
     const actual = new URL(urlFor(stop));
     assert.equal(actual.searchParams.get('destination'), `${stop.lat},${stop.lng}`);
     assert.equal(actual.searchParams.has('destination_place_id'), false);
@@ -382,4 +388,28 @@ test('arrival summary preserves single, multiple, and missing schedule informati
   assert.equal(h.run("formatCampusArrivalSummary({campusId:'main',arrivalTimes:['07:40 AM','07:45 AM','07:50 AM']})"), 'Arrivals: 07:40 • 07:45 • 07:50');
   assert.equal(h.run("formatCampusArrivalSummary({campusId:'main',arrivalTimes:[]})"), '');
   assert.equal(h.run("formatCampusArrivalSummary({campusId:'main'})"), '');
+});
+
+// Independently read PDF columns: pages 3 (11–14) and 4 (15).
+test('five official KSK routes use independent normal cards, details, search and nearby matching', () => {
+ const h=app();
+ const rows=JSON.parse(fs.readFileSync(path.join(__dirname,'ksk-official-fixture.json'),'utf8'));
+ assert.equal(h.run("UET_DATA.routes.some(r=>r.id==='ksk-11-15')"),false);
+ for(const [no,driver,phone,vehicle,stops] of rows){
+  const id='ksk-'+no;
+  h.run("var r=UET_DATA.routes.find(r=>r.id==="+JSON.stringify(id)+"); appState.selectedCampus='ksk'; appState.selectedRouteId=null; appState.routeScheduleQuery=''; renderRoutesPage()");
+  const route=JSON.parse(h.run('JSON.stringify(r)'));
+  assert.equal(route.driverName,driver);assert.equal(route.driverPhone,phone);assert.equal(route.vehicleNo,vehicle);
+  assert.deepEqual(route.stops.map(s=>[s.name,s.time]),stops);
+  assert.match(h.elements.get('routes-detail-container').innerHTML,new RegExp('route-card-'+id));
+  assert.ok(h.run('renderRouteSummaryCard(r)').includes("viewRouteDetail('"+id+"')"));
+  h.run('appState.selectedRouteId=r.id;renderRoutesPage()');
+  const html=h.elements.get('routes-detail-container').innerHTML;
+  assert.ok(html.includes('Route '+no+' - Full Details'));assert.ok(html.includes('Back to Route Schedules'));
+  assert.ok(html.includes(driver));assert.ok(html.includes(phone));assert.ok(html.includes(vehicle));
+  assert.doesNotMatch(html,/shuttle/i);
+  for(const [other] of rows) if(other!==no) assert.ok(!html.includes('Route '+other+' - Full Details'));
+  assert.equal(h.run("findExactStopMatches('Main Campus','ksk').some(x=>x.id===r.id)"),true);
+  assert.equal(h.run("findNearbyRoutes(r.stops[0].lat,r.stops[0].lng,'ksk').matchingRoutes.some(x=>x.route.id===r.id)"),true);
+ }
 });

@@ -46,10 +46,10 @@ const UET_DATA = {
     },
     {
       id: 3,
-      title: "Shuttle Routes 11-15 Guidance",
+      title: "KSK Routes 11–15 Guidance",
       date: "Fresher Alert",
-      category: "Shuttles",
-      content: "Routes 11 through 15 serve as dedicated high-frequency shuttles connecting UET Main Campus to KSK New Campus."
+      category: "Routes",
+      content: "Routes 11 through 15 are regular KSK student routes from Main Campus to New Campus (KSK), each with its own driver and vehicle."
     }
   ],
 
@@ -964,29 +964,555 @@ const UET_DATA = {
         { name: "New Campus (KSK)", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
       ]
     },
+    // Official PDF pages 3–4: each route column transcribed independently.
     {
-      id: "ksk-11-15",
-      routeNo: "11 - 15",
-      campusId: "ksk",
-      campus: "KSK",
-      name: "Main Campus to KSK Shuttle Express (Buses 11, 12, 13, 14, 15)",
-      startPoint: "UET Main Campus",
-      endPoint: "KSK New Campus",
-      driverName: "Transport Office Shuttles",
-      driverPhone: "0304-0165776",
-      vehicleNo: "Fleet 11-15",
-      arrivalTime: "07:50 AM",
-      notes: "Dedicated multi-bus inter-campus shuttles operating between Main Campus & KSK Campus.",
-      stops: [
-        { name: "Main Campus (GT Road)", time: "7:00 AM", lat: 31.5794, lng: 74.3562, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Tezab Ehata", time: "7:04 AM", lat: 31.5780, lng: 74.3480, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Station stairs", time: "7:07 AM", lat: 31.5730, lng: 74.3350, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Do Moria Pull", time: "7:10 AM", lat: 31.5820, lng: 74.3310, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Lari adda", time: "7:12 AM", lat: 31.5910, lng: 74.3290, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Yadgar Chowk", time: "7:14 AM", lat: 31.5920, lng: 74.3220, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Timber market", time: "7:15 AM", lat: 31.5980, lng: 74.3180, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "Batti chowk", time: "7:22 AM", lat: 31.6050, lng: 74.3080, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] },
-        { name: "New Campus (KSK)", time: "7:50 AM", lat: 31.7295, lng: 74.2985, coordinateStatus: "unverified", placeId: null, source: null, aliases: [] }
+      "id": "ksk-11",
+      "routeNo": "Route 11",
+      "campusId": "ksk",
+      "campus": "KSK",
+      "name": "Main Campus → New Campus (KSK)",
+      "startPoint": "Main Campus",
+      "endPoint": "New Campus",
+      "driverName": "Mr. Javed Iqbal",
+      "driverPhone": "0302-4329470",
+      "vehicleNo": "LEI-3105",
+      "arrivalTime": "07:50 AM",
+      "notes": "Regular KSK student route. Blank stop times are not provided in the official morning schedule.",
+      "stops": [
+        {
+          "name": "Main Campus",
+          "time": "7:00",
+          "lat": 31.5794,
+          "lng": 74.3562,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sultan Pura",
+          "time": "7:05",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Station stairs",
+          "time": "",
+          "lat": 31.573,
+          "lng": 74.335,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Do Moria Pull",
+          "time": "7:10",
+          "lat": 31.582,
+          "lng": 74.331,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sheran wala",
+          "time": "",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Lari ada gol chakr",
+          "time": "7:15",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Timber market",
+          "time": "",
+          "lat": 31.598,
+          "lng": 74.318,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Batti chowk",
+          "time": "7:20",
+          "lat": 31.605,
+          "lng": 74.308,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "New Campus",
+          "time": "7:50",
+          "lat": 31.7295,
+          "lng": 74.2985,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "ksk-12",
+      "routeNo": "Route 12",
+      "campusId": "ksk",
+      "campus": "KSK",
+      "name": "Main Campus → New Campus (KSK)",
+      "startPoint": "Main Campus",
+      "endPoint": "New Campus",
+      "driverName": "Mr. M. Haris",
+      "driverPhone": "0306-4772357",
+      "vehicleNo": "LEI-3106",
+      "arrivalTime": "07:50 AM",
+      "notes": "Regular KSK student route. Blank stop times are not provided in the official morning schedule.",
+      "stops": [
+        {
+          "name": "Main Campus",
+          "time": "7:00",
+          "lat": 31.5794,
+          "lng": 74.3562,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sultan Pura",
+          "time": "7:05",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Station stairs",
+          "time": "",
+          "lat": 31.573,
+          "lng": 74.335,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Do Moria Pull",
+          "time": "7:10",
+          "lat": 31.582,
+          "lng": 74.331,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sheran wala",
+          "time": "",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Lari ada gol chakr",
+          "time": "7:15",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Timber market",
+          "time": "",
+          "lat": 31.598,
+          "lng": 74.318,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Batti chowk",
+          "time": "7:20",
+          "lat": 31.605,
+          "lng": 74.308,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "New Campus",
+          "time": "7:50",
+          "lat": 31.7295,
+          "lng": 74.2985,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "ksk-13",
+      "routeNo": "Route 13",
+      "campusId": "ksk",
+      "campus": "KSK",
+      "name": "Main Campus → New Campus (KSK)",
+      "startPoint": "Main Campus",
+      "endPoint": "New Campus",
+      "driverName": "Mr. M. Arshad",
+      "driverPhone": "0307-4929294",
+      "vehicleNo": "LZB-2607",
+      "arrivalTime": "07:50 AM",
+      "notes": "Regular KSK student route. Blank stop times are not provided in the official morning schedule.",
+      "stops": [
+        {
+          "name": "Main Campus",
+          "time": "7:00",
+          "lat": 31.5794,
+          "lng": 74.3562,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sultan Pura",
+          "time": "7:05",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Station stairs",
+          "time": "",
+          "lat": 31.573,
+          "lng": 74.335,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Do Moria Pull",
+          "time": "7:10",
+          "lat": 31.582,
+          "lng": 74.331,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sheran wala",
+          "time": "",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Lari ada gol chakr",
+          "time": "7:15",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Timber market",
+          "time": "",
+          "lat": 31.598,
+          "lng": 74.318,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Batti chowk",
+          "time": "7:20",
+          "lat": 31.605,
+          "lng": 74.308,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "New Campus",
+          "time": "7:50",
+          "lat": 31.7295,
+          "lng": 74.2985,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "ksk-14",
+      "routeNo": "Route 14",
+      "campusId": "ksk",
+      "campus": "KSK",
+      "name": "Main Campus → New Campus (KSK)",
+      "startPoint": "Main Campus",
+      "endPoint": "New Campus",
+      "driverName": "Mr. Huzaifa Amin",
+      "driverPhone": "0322-7315571",
+      "vehicleNo": "LWN-3034",
+      "arrivalTime": "07:50 AM",
+      "notes": "Regular KSK student route. Blank stop times are not provided in the official morning schedule.",
+      "stops": [
+        {
+          "name": "Main Campus",
+          "time": "7:00",
+          "lat": 31.5794,
+          "lng": 74.3562,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sultan Pura",
+          "time": "7:05",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Garhi Shahu chowk",
+          "time": "",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Railway Station",
+          "time": "7:10",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Do moria Pull",
+          "time": "",
+          "lat": 31.582,
+          "lng": 74.331,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sheran wala",
+          "time": "",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Lari ada gol chakr",
+          "time": "7:15",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Timber market",
+          "time": "",
+          "lat": 31.598,
+          "lng": 74.318,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Batti Chowk",
+          "time": "7:20",
+          "lat": 31.605,
+          "lng": 74.308,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "New Campus",
+          "time": "7:50",
+          "lat": 31.7295,
+          "lng": 74.2985,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        }
+      ]
+    },
+    {
+      "id": "ksk-15",
+      "routeNo": "Route 15",
+      "campusId": "ksk",
+      "campus": "KSK",
+      "name": "Main Campus → New Campus (KSK)",
+      "startPoint": "Main Campus",
+      "endPoint": "New Campus",
+      "driverName": "Mr. Abdul Basit",
+      "driverPhone": "0308-4973489",
+      "vehicleNo": "LEA-6833",
+      "arrivalTime": "07:50 AM",
+      "notes": "Regular KSK student route. Blank stop times are not provided in the official morning schedule.",
+      "stops": [
+        {
+          "name": "Main Campus",
+          "time": "7:00",
+          "lat": 31.5794,
+          "lng": 74.3562,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sultan Pura",
+          "time": "7:05",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Garhi Shahu chowk",
+          "time": "",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Railway Station",
+          "time": "7:10",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Do moria Pull",
+          "time": "",
+          "lat": 31.582,
+          "lng": 74.331,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Sheran wala",
+          "time": "",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Lari ada gol chakr",
+          "time": "7:15",
+          "lat": null,
+          "lng": null,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Timber market",
+          "time": "",
+          "lat": 31.598,
+          "lng": 74.318,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "Batti Chowk",
+          "time": "7:20",
+          "lat": 31.605,
+          "lng": 74.308,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        },
+        {
+          "name": "New Campus",
+          "time": "7:50",
+          "lat": 31.7295,
+          "lng": 74.2985,
+          "coordinateStatus": "unverified",
+          "placeId": null,
+          "source": null,
+          "aliases": []
+        }
       ]
     }
   ],
@@ -1005,8 +1531,8 @@ const UET_DATA = {
       a: "This schedule focuses exclusively on morning arrival routes to ensure students reach campus on time. For afternoon return departures, buses leave campus terminals at 04:15 PM daily."
     },
     {
-      q: "Can Main Campus students ride the KSK shuttle buses?",
-      a: "Yes! Shuttle Routes 11 to 15 are specifically designed to carry students and staff between Main Campus GT Road and KSK New Campus."
+      q: "Where do regular KSK Routes 11–15 start?",
+      a: "Regular KSK Routes 11–15 start at Main Campus and travel to New Campus. Each has its own schedule and driver details under Route Schedules."
     },
     {
       q: "Who should I contact in case of lost belongings or driver queries?",
