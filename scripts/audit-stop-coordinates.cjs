@@ -21,6 +21,7 @@ function validateStopCoordinates(stop) {
 function auditStopCoordinates(routes) {
   const invalidCoordinates = [];
   const invalidMetadata = [];
+  const unavailableCoordinates = [];
   const groups = new Map();
   let stopCount = 0;
   for (const route of routes) {
@@ -29,6 +30,11 @@ function auditStopCoordinates(routes) {
       const reference = { routeId: route.id, routeNo: route.routeNo, campusId: route.campusId, stopIndex, name: stop.name };
       const issues = validateStopCoordinates(stop);
       if (issues.length) invalidCoordinates.push({ ...reference, issues });
+      // An explicitly unlocated stop remains in schedules but cannot be used by GPS.
+      // Partial, malformed, or supposedly verified coordinates still fail the audit.
+      if (stop.lat === null && stop.lng === null && stop.coordinateStatus === 'unverified') {
+        unavailableCoordinates.push({ ...reference, issues });
+      }
       const metadataIssues = [];
       if (!['verified', 'approximate', 'unverified'].includes(stop.coordinateStatus)) metadataIssues.push('invalid coordinateStatus');
       if (stop.placeId !== null && (typeof stop.placeId !== 'string' || !stop.placeId.trim())) metadataIssues.push('placeId must be null or a nonempty string');
@@ -50,7 +56,7 @@ function auditStopCoordinates(routes) {
     if (new Set(routeIds).size < routeIds.length) reasons.push('Coordinates repeated within the same route');
     return { ...group, suspicious: reasons.length > 0, reasons };
   });
-  return { routeCount: routes.length, stopCount, invalidCoordinates, invalidMetadata, duplicateCoordinates };
+  return { routeCount: routes.length, stopCount, invalidCoordinates, unavailableCoordinates, invalidMetadata, duplicateCoordinates };
 }
 
 function formatAuditReport(report) {
@@ -81,6 +87,10 @@ function formatAuditReport(report) {
   return lines.join('\n') + '\n';
 }
 
+function auditHasErrors(report) {
+  return report.invalidCoordinates.length > report.unavailableCoordinates.length || report.invalidMetadata.length > 0;
+}
+
 if (require.main === module) {
   const report = auditStopCoordinates(loadData().routes);
   if (process.argv.includes('--write')) {
@@ -88,9 +98,9 @@ if (require.main === module) {
     fs.writeFileSync(path.join(__dirname, '../docs/stop-coordinate-audit.md'), formatAuditReport(report));
   }
   console.log(JSON.stringify({routes: report.routeCount, stops: report.stopCount,
-    invalidCoordinates: report.invalidCoordinates.length, invalidMetadata: report.invalidMetadata.length,
+    invalidCoordinates: report.invalidCoordinates.length, unavailableCoordinates: report.unavailableCoordinates.length, invalidMetadata: report.invalidMetadata.length,
     duplicateGroups: report.duplicateCoordinates.length,
     suspiciousGroups: report.duplicateCoordinates.filter(group => group.suspicious).length}));
-  if (report.invalidCoordinates.length || report.invalidMetadata.length) process.exitCode = 1;
+  if (auditHasErrors(report)) process.exitCode = 1;
 }
-module.exports = {loadData, validateStopCoordinates, auditStopCoordinates, formatAuditReport};
+module.exports = {loadData, validateStopCoordinates, auditStopCoordinates, formatAuditReport, auditHasErrors};
