@@ -1240,7 +1240,7 @@ function renderHomePage() {
   if (!routesGrid) return;
 
   // Filter routes by campus choice
-  const displayRoutes = UET_DATA.routes.filter(r => r.campusId === appState.selectedCampus);
+  const displayRoutes = UET_DATA.routes.filter(r => r.campusId === appState.selectedCampus).slice(0, 4);
 
   let html = '';
   displayRoutes.forEach(route => {

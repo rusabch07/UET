@@ -65,8 +65,8 @@ test('committed route dataset remains unchanged after stripping added metadata',
     for (const key of ['coordinateStatus','placeId','source','aliases']) delete stop[key];
   }
   const actual = createHash('sha256').update(JSON.stringify(data)).digest('hex');
-  // Baseline includes the independently transcribed official KSK Routes 11–15.
-  assert.equal(actual, '9ddad98588a2a7b2c398adebba4521abd47a13fb75d3a486936d7d639c30573c');
+  // Baseline includes the committed KSK driver updates from 2e09d27.
+  assert.equal(actual, 'e355bba816eb357cd23635aa4f4d09cfa6d4a66cf1621fd7ff34a88a2730e812');
 });
 
 test('coordinate validator rejects missing, nonnumeric, nonfinite, and out-of-range values without coercion', () => {
